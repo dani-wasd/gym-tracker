@@ -1,11 +1,11 @@
-import { defineConfig } from "drizzle-kit";
+import { defineConfig } from 'drizzle-kit';
+import './envConfig.ts'
 
 export default defineConfig({
-  schema: "./src/lib/db/schema.ts",
-  out: "./src/lib/db/migrations",
-  dialect: "turso",
+  schema: './src/lib/db/schema.ts',
+  out: './src/lib/supabase/migrations',
+  dialect: 'postgresql',
   dbCredentials: {
-    url: process.env.TURSO_DATABASE_URL!,
-    authToken: process.env.TURSO_AUTH_TOKEN!,
+    url: process.env.DATABASE_URL!,
   },
 });
