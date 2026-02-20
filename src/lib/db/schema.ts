@@ -15,7 +15,6 @@ export const users = pgTable(
     username: text('username').notNull(),
     email: text('email').notNull().unique(),
     password: text('password').notNull(), // hashed password
-    timezone: text('timezone').notNull(),
   },
   (table) => [
     // index on email
