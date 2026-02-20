@@ -1,6 +1,6 @@
 "use client";
 
-import { login } from '../actions'
+import { signup } from '../actions'
 import { GlowCard, GlowCardContent } from "@/src/components/ui/glow-card";
 
 export default function Login() {
@@ -9,13 +9,14 @@ export default function Login() {
       <GlowCard>
         <GlowCardContent>
           <form className="flex flex-col pt-2">
+            <label>Username: </label>
+            <input type="text" name="username" />
             <label>Email: </label>
             <input type="email" name="email" />
             <label>Password: </label>
             <input type="password" name="password" />
-            <button formAction={login}>Login</button>
+            <button formAction={signup}>Sign up</button>
           </form>
-          <small>Not a member? <a href="/signup">Sign up</a></small>
         </GlowCardContent>
       </GlowCard>
     </main>
