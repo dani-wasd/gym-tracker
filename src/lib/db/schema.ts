@@ -31,8 +31,8 @@ export const workouts = pgTable(
     userId: uuid('user_id')
       .notNull()
       .references(() => users.userId, { onDelete: 'cascade' }),
-    startTime: timestamp('start_time', { withTimezone: false }).notNull(),
-    endTime: timestamp('end_time', { withTimezone: false }).notNull(),
+    startTime: timestamp('start_time').notNull(),
+    endTime: timestamp('end_time').notNull(),
     musclesWorked: text('muscles_worked').notNull(),
   },
   (table) => [
