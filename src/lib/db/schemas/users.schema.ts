@@ -4,7 +4,7 @@ import { workouts } from "./workouts.schema";
 import { schedules } from "./schedules.schema";
 
 export const users = pgTable('users', {
-    userId: uuid('user_id').defaultRandom().primaryKey(),
+    userId: uuid('user_id').primaryKey(),
     username: text('username').notNull(),
     email: text('email').notNull().unique(),
     timezone: text('timezone').default('UTC'),
