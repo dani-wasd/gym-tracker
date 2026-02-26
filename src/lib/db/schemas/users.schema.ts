@@ -1,7 +1,7 @@
 import { pgTable, uuid, text, index } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { workouts } from "./workouts.schema";
-import { schedules } from "./schedules.schema";
+import { weeklySchedules } from "./weekly_schedules.schema";
 
 export const users = pgTable('users', {
     userId: uuid('user_id').primaryKey(),
@@ -13,7 +13,7 @@ export const users = pgTable('users', {
 
 export const usersRelations = relations(users, ({ many }) => ({
   workouts: many(workouts),
-  schedules: many(schedules),
+  schedules: many(weeklySchedules),
 }));
 
 export type User = typeof users.$inferSelect;
