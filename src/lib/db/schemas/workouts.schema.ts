@@ -13,6 +13,7 @@ export const workouts = pgTable('workouts', {
     startTime: timestamp('start_time', { withTimezone: true }).notNull(),
     endTime: timestamp('end_time', { withTimezone: true }).notNull(),
     localDate: text('local_date').notNull(),
+    recordedTimezone: text('recorded_timezone').notNull(),
     musclesWorked: text('muscles_worked').array(),
   }, (table) => [
     check('time_check', sql`${table.startTime} < ${table.endTime}`),
