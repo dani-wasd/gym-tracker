@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-black" data-new-gr-c-s-check-loaded="14.1274.0" data-gr-ext-installed="" data-new-gr-c-s-loaded="14.1274.0">
+      <body className="bg-black text-white">
         {children}
       </body>
     </html>
