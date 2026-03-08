@@ -31,7 +31,7 @@ export async function saveWorkout(userId: string, workoutData: any) {
     const [newSchedule] = await db.insert(weeklySchedules).values({
       userId,
       weekStartDate: sunday,
-      plannedDays: lastSchedule?.plannedDays ?? [], // Default to none if no last schedule
+      plannedDays: lastSchedule?.plannedDays ?? 0, // Default to none if no last schedule
     }).returning();
     
     currentSchedule = newSchedule;
@@ -98,4 +98,8 @@ function validateWorkoutData(workoutData: {
   }
 
   return workoutData;
+}
+
+export async function saveWorkoutSchedule(nextWeek: String, scheduleBitMask: number) {
+
 }

@@ -8,7 +8,7 @@ export const weeklySchedules = pgTable('weekly_schedules', {
     .references(() => users.userId, { onDelete: 'cascade' })
     .notNull(),
   weekStartDate: text('week_start_date').notNull(), 
-  plannedDays: integer('planned_days').array().notNull(), 
+  plannedDays: integer('planned_days').notNull(), // Bitmask of days
 }, (table) => [
   // Correct SQL for checking values inside an array
   check('day_range', sql`0 <= ALL(${table.plannedDays}) AND 6 >= ALL(${table.plannedDays})`),
