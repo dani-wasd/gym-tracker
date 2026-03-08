@@ -17,8 +17,8 @@ CREATE TABLE "weekly_schedules" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"user_id" uuid NOT NULL,
 	"week_start_date" text NOT NULL,
-	"planned_days" integer[] NOT NULL,
-	CONSTRAINT "day_range" CHECK (0 <= ALL("weekly_schedules"."planned_days") AND 6 >= ALL("weekly_schedules"."planned_days"))
+	"planned_days" integer NOT NULL,
+	CONSTRAINT "day_range" CHECK ("weekly_schedules"."planned_days" >= 0 AND "weekly_schedules"."planned_days" <= 127)
 );
 --> statement-breakpoint
 CREATE TABLE "workouts" (

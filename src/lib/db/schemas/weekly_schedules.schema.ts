@@ -11,6 +11,6 @@ export const weeklySchedules = pgTable('weekly_schedules', {
   plannedDays: integer('planned_days').notNull(), // Bitmask of days
 }, (table) => [
   // Correct SQL for checking values inside an array
-  check('day_range', sql`0 <= ALL(${table.plannedDays}) AND 6 >= ALL(${table.plannedDays})`),
+  check('day_range', sql`${table.plannedDays} >= 0 AND ${table.plannedDays} <= 127`),
   uniqueIndex('user_week_idx').on(table.userId, table.weekStartDate)
 ]);

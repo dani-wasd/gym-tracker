@@ -1,5 +1,5 @@
 {
-  "id": "314670db-ff02-4c6c-a732-ff15309c3e90",
+  "id": "9fd74fda-3513-499e-bf84-a2eb6bc2d7e7",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -178,7 +178,7 @@
         },
         "planned_days": {
           "name": "planned_days",
-          "type": "integer[]",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true
         }
@@ -227,7 +227,7 @@
       "checkConstraints": {
         "day_range": {
           "name": "day_range",
-          "value": "0 <= ALL(\"weekly_schedules\".\"planned_days\") AND 6 >= ALL(\"weekly_schedules\".\"planned_days\")"
+          "value": "\"weekly_schedules\".\"planned_days\" >= 0 AND \"weekly_schedules\".\"planned_days\" <= 127"
         }
       },
       "isRLSEnabled": false
