@@ -15,6 +15,7 @@ export default function Login() {
             <input type="email" name="email" />
             <label>Password: </label>
             <input type="password" name="password" />
+            <input hidden name="timezone" value={Intl.DateTimeFormat().resolvedOptions().timeZone} />
             <button formAction={signup}>Sign up</button>
           </form>
         </GlowCardContent>

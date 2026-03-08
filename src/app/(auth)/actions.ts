@@ -44,7 +44,7 @@ export async function signup(formData: FormData) {
       userId: authData.user.id, // Use the ID from Supabase Auth
       email: data.email,
       username: formData.get('username') as string,
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+      timezone: formData.get('timezone') as string,
     })
   }
   else {
