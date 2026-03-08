@@ -6,17 +6,7 @@ import { and, eq, desc } from "drizzle-orm";
 import { startOfWeek, format, parseISO } from "date-fns";
 import { toZonedTime } from "date-fns-tz";
 import { muscleGroup } from "@/src/lib/definitions";
-
-const MINUTE_MS = 60 * 1000;
-const HOUR_MS = 60 * MINUTE_MS;
-const DAY_MS = 24 * HOUR_MS;
-
-const LIMITS = {
-  MIN_DURATION: 10 * MINUTE_MS,
-  MAX_DURATION: 10 * HOUR_MS,
-  SUBMISSION_WINDOW: DAY_MS,
-  FUTURE_BUFFER: 5 * MINUTE_MS,
-};
+import { LIMITS } from "@/src/lib/definitions";
 
 export async function saveWorkout(userId: string, workoutData: any) {
   const validatedData = validateWorkoutData(workoutData);
