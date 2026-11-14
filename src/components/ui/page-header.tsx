@@ -1,7 +1,8 @@
 interface PageHeaderProps {
   eyebrow: string;
-  title: string;
-  subtitle?: string;
+  /** Text, or a placeholder while it loads. */
+  title: React.ReactNode;
+  subtitle?: React.ReactNode;
 }
 
 /** The poster-sized heading that opens every signed-in page. */

@@ -113,6 +113,28 @@
   );
 }
 
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+/* A placeholder bar with a light sweeping across it, for content still loading. */
+@utility skeleton {
+  border-radius: 2px;
+  background: linear-gradient(
+      100deg,
+      var(--color-iron) 40%,
+      color-mix(in srgb, var(--color-steel) 40%, var(--color-iron)) 50%,
+      var(--color-iron) 60%
+    )
+    0 0 / 300% 100%;
+  animation: shimmer 1.5s linear infinite;
+}
+
 /* Lets an SVG group rotate around its own centre. */
 @utility spin-origin {
   transform-box: fill-box;

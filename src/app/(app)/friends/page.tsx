@@ -1,55 +1,35 @@
-import { AddFriendForm } from "@/src/components/friends/add-friend-form";
-import { FriendRow, type FriendWeek } from "@/src/components/friends/friend-row";
-import { RequestList } from "@/src/components/friends/request-list";
-import { PageHeader } from "@/src/components/ui/page-header";
-import { requireProfile } from "@/src/lib/auth";
-import { getFriendCircle, type FriendLink } from "@/src/lib/data/friends";
-import { timezoneOf } from "@/src/lib/data/users";
-import { getCurrentWeek } from "@/src/lib/data/week-summary";
-import { localClockLabel, timezoneOffsetLabel } from "@/src/lib/dates";
+import { Suspense } from "react";
+import { FriendsFrame } from "./frame";
+import {
+  FriendsSection,
+  FriendsSkeleton,
+  IncomingRequests,
+  OutgoingRequests,
+} from "./sections";
 
-async function toFriendWeek({ friendshipId, user }: FriendLink): Promise<FriendWeek> {
-  const timezone = timezoneOf(user);
-  return {
-    friendshipId,
-    username: user.username,
-    localClock: localClockLabel(timezone),
-    offset: timezoneOffsetLabel(timezone),
-    week: (await getCurrentWeek(user)).summary,
-  };
-}
-
-export default async function FriendsPage() {
-  const profile = await requireProfile();
-  const circle = await getFriendCircle(profile.userId);
-  const friends = await Promise.all(circle.friends.map(toFriendWeek));
-
+/**
+ * Static text paints at once; the lists stream in. Request lists are usually
+ * empty, so they get no placeholder — one that vanished would only make the
+ * page jump.
+ */
+export default function FriendsPage() {
   return (
-    <div className="flex flex-col gap-14">
-      <PageHeader eyebrow="Friends · each week runs on its owner's clock" title="The rack" />
-
-      <RequestList title="Wants on your rack" direction="incoming" requests={circle.incoming} />
-
-      {friends.length === 0 ? (
-        <p className="max-w-md text-sm text-steel">
-          Rack&apos;s empty. Add someone below — once they accept, their week hangs
-          here and yours hangs on theirs. Nobody skips quietly.
-        </p>
-      ) : (
-        <ul className="border-t border-iron">
-          {friends.map((friend) => (
-            <FriendRow key={friend.friendshipId} friend={friend} />
-          ))}
-        </ul>
-      )}
-
-      <section>
-        <p className="eyebrow">Add a friend</p>
-        <h2 className="headline mt-1 mb-6 text-5xl">Call a spotter</h2>
-        <AddFriendForm />
-      </section>
-
-      <RequestList title="Waiting on them" direction="outgoing" requests={circle.outgoing} />
-    </div>
+    <FriendsFrame
+      incoming={
+        <Suspense>
+          <IncomingRequests />
+        </Suspense>
+      }
+      friends={
+        <Suspense fallback={<FriendsSkeleton />}>
+          <FriendsSection />
+        </Suspense>
+      }
+      outgoing={
+        <Suspense>
+          <OutgoingRequests />
+        </Suspense>
+      }
+    />
   );
 }

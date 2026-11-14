@@ -1,8 +1,9 @@
 interface StatTileProps {
   label: string;
-  value: string;
+  /** The number, or a placeholder while it loads. */
+  value: React.ReactNode;
   /** Plain-words context for the number. */
-  detail: string;
+  detail: React.ReactNode;
 }
 
 /** One headline number. */
