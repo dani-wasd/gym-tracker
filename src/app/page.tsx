@@ -1,64 +1,91 @@
-import Image from "next/image";
+import Link from "next/link";
+import { PlateLegend } from "@/src/components/barbell/legend";
+import { WeekBar } from "@/src/components/barbell/week-bar";
+import { buttonStyles } from "@/src/components/ui/button";
+import { Wordmark } from "@/src/components/wordmark";
+import { ROUTES } from "@/src/lib/routes";
+import { buildWeekSummary } from "@/src/lib/week";
 
-export default function Home() {
+/** A made-up week so visitors can play with the bar before signing up. */
+const DEMO_WEEK = buildWeekSummary({
+  weekStart: "2026-11-15",
+  today: "2026-11-19",
+  plannedMask: 0b0111110, // Mon–Fri
+  sessions: [
+    { id: 1, date: "2026-11-16", startLabel: "5:02 PM", endLabel: "6:10 PM", minutes: 68, muscles: ["Chest", "Triceps"] },
+    { id: 2, date: "2026-11-18", startLabel: "7:15 AM", endLabel: "8:05 AM", minutes: 50, muscles: ["Legs"] },
+    { id: 3, date: "2026-11-15", startLabel: "10:30 AM", endLabel: "11:10 AM", minutes: 40, muscles: ["Abs"] },
+  ],
+});
+
+const STEPS = [
+  {
+    title: "Load next week",
+    body: "Pick the days you'll train. Each one is a plate on next week's bar. Lock it in.",
+  },
+  {
+    title: "Lift it",
+    body: "Start the clock when you walk in, stop it when you rack it, tag what you trained.",
+  },
+  {
+    title: "Get seen",
+    body: "Friends see your bar on your clock — lifted, missed or still loaded. So do you see theirs.",
+  },
+];
+
+export default function HomePage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="mx-auto flex min-h-dvh w-full max-w-5xl flex-col px-5 sm:px-8">
+      <header className="flex items-center justify-between py-5">
+        <Wordmark />
+        <Link href={ROUTES.login} className={buttonStyles({ variant: "ghost", size: "sm", className: "px-0" })}>
+          Sign in
+        </Link>
+      </header>
+
+      <main className="flex flex-1 flex-col gap-16 py-10 sm:gap-20 sm:py-16">
+        <section>
+          <h1 className="headline text-[clamp(4rem,17vw,12rem)]">
+            Plan it.
+            <br />
+            Lift it.
+            <br />
+            <span className="text-plate-red">Get seen.</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="mt-6 max-w-lg text-steel">
+            A gym tracker where your week is a loaded barbell. Plan the days,
+            lift the plates, and let your friends see exactly which ones you
+            left on the floor.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+          <div className="mt-8 flex flex-wrap gap-4">
+            <Link href={ROUTES.signup} className={buttonStyles({ size: "lg" })}>
+              Start lifting
+            </Link>
+            <Link href={ROUTES.login} className={buttonStyles({ variant: "outline", size: "lg" })}>
+              Sign in
+            </Link>
+          </div>
+        </section>
+
+        <section>
+          <p className="eyebrow">Try it · hover a plate</p>
+          <WeekBar summary={DEMO_WEEK} />
+          <PlateLegend className="mt-8" />
+        </section>
+
+        <ol className="grid gap-10 border-t-2 border-iron pt-10 sm:grid-cols-3">
+          {STEPS.map((step, index) => (
+            <li key={step.title}>
+              <p className="font-stencil text-6xl leading-none font-extrabold text-iron">
+                0{index + 1}
+              </p>
+              <h2 className="mt-2 font-display text-3xl leading-none font-extrabold uppercase">
+                {step.title}
+              </h2>
+              <p className="mt-3 text-sm text-steel">{step.body}</p>
+            </li>
+          ))}
+        </ol>
       </main>
     </div>
   );

@@ -1,15 +1,23 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Big_Shoulders, Big_Shoulders_Stencil, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const display = Big_Shoulders({
+  variable: "--font-big-shoulders",
   subsets: ["latin"],
+  adjustFontFallback: false,
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const stencil = Big_Shoulders_Stencil({
+  variable: "--font-big-shoulders-stencil",
   subsets: ["latin"],
+  adjustFontFallback: false,
+});
+
+const mono = IBM_Plex_Mono({
+  variable: "--font-plex-mono",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -23,8 +31,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="bg-black text-white">
+    <html lang="en" className={`${display.variable} ${stencil.variable} ${mono.variable}`}>
+      <body>
         {children}
       </body>
     </html>

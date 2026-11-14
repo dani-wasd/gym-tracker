@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { ROUTES, isGuestOnlyPath, isProtectedPath } from '@/src/lib/routes'
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -15,7 +16,7 @@ export async function updateSession(request: NextRequest) {
           return request.cookies.getAll()
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
           supabaseResponse = NextResponse.next({
             request,
           })
@@ -28,7 +29,30 @@ export async function updateSession(request: NextRequest) {
   )
 
   // refreshing the auth token
-  await supabase.auth.getUser()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  const { pathname } = request.nextUrl
+  if (!user && isProtectedPath(pathname)) {
+    return redirectKeepingSession(request, supabaseResponse, ROUTES.login)
+  }
+  if (user && isGuestOnlyPath(pathname)) {
+    return redirectKeepingSession(request, supabaseResponse, ROUTES.dashboard)
+  }
 
   return supabaseResponse
+}
+
+/** Redirects while carrying over any auth cookies refreshed during this request. */
+function redirectKeepingSession(
+  request: NextRequest,
+  sessionResponse: NextResponse,
+  pathname: string,
+) {
+  const url = request.nextUrl.clone()
+  url.pathname = pathname
+  url.search = ''
+
+  const response = NextResponse.redirect(url)
+  sessionResponse.cookies.getAll().forEach((cookie) => response.cookies.set(cookie))
+  return response
 }

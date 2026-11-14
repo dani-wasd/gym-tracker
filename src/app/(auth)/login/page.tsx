@@ -1,23 +1,31 @@
-"use client";
+import Link from "next/link";
+import { login } from "../actions";
+import { AuthForm } from "@/src/components/auth/auth-form";
+import { Field } from "@/src/components/ui/field";
+import { ROUTES } from "@/src/lib/routes";
 
-import { login } from '../actions'
-import { GlowCard, GlowCardContent } from "@/src/components/ui/glow-card";
-
-export default function Login() {
+export default function LoginPage() {
   return (
-    <main className="flex items-center justify-center h-screen">
-      <GlowCard>
-        <GlowCardContent>
-          <form className="flex flex-col pt-2">
-            <label>Email: </label>
-            <input type="email" name="email" />
-            <label>Password: </label>
-            <input type="password" name="password" />
-            <button formAction={login}>Login</button>
-          </form>
-          <small>Not a member? <a href="/signup">Sign up</a></small>
-        </GlowCardContent>
-      </GlowCard>
-    </main>
+    <>
+      <h1 className="headline text-8xl">Clock in</h1>
+
+      <AuthForm action={login} submitLabel="Sign in">
+        <Field label="Email" name="email" type="email" required autoComplete="email" />
+        <Field
+          label="Password"
+          name="password"
+          type="password"
+          required
+          autoComplete="current-password"
+        />
+      </AuthForm>
+
+      <p className="text-sm text-steel">
+        Not a member?{" "}
+        <Link href={ROUTES.signup} className="text-chalk underline underline-offset-4">
+          Sign up
+        </Link>
+      </p>
+    </>
   );
 }

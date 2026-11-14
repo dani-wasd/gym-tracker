@@ -1,58 +1,70 @@
 'use server'
 
-import { db } from '@/src/lib/db/connection'
-import { users } from '@/src/lib/db/schemas/users.schema'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/src/lib/supabase/server'
+import { createUser } from '@/src/lib/data/users'
+import { ROUTES } from '@/src/lib/routes'
+import { parseCredentials, parseSignup } from '@/src/lib/validation'
 
-export async function login(formData: FormData) {
-  const supabase = await createClient()
-
-  // TODO: validate inputs
-  const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
-  }
-
-  const { error } = await supabase.auth.signInWithPassword(data)
-
-  if (error) {
-    redirect('/error')
-  }
-
-  console.log('User logged in:', data.email)
-
-  revalidatePath('/', 'layout')
-  redirect('/dashboard')
+/** State handed back to the auth forms via `useActionState`. */
+export interface AuthFormState {
+  error?: string
+  notice?: string
 }
 
-export async function signup(formData: FormData) {
+export async function login(
+  _previous: AuthFormState,
+  formData: FormData,
+): Promise<AuthFormState> {
+  const credentials = parseCredentials(formData)
+  if (!credentials.ok) return { error: credentials.error }
+
   const supabase = await createClient()
-
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-  const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
-  }
-
-  const { data: authData, error } = await supabase.auth.signUp(data)
-
-  if (!error && authData.user) {
-    await db.insert(users).values({
-      userId: authData.user.id, // Use the ID from Supabase Auth
-      email: data.email,
-      username: formData.get('username') as string,
-      timezone: formData.get('timezone') as string,
-    })
-  }
-  else {
-    redirect('/error')
-  }
-
-  console.log('User signed up:', data.email)
+  const { error } = await supabase.auth.signInWithPassword(credentials.value)
+  if (error) return { error: 'Wrong email or password.' }
 
   revalidatePath('/', 'layout')
-  redirect('/dashboard')
+  redirect(ROUTES.dashboard)
+}
+
+export async function signup(
+  _previous: AuthFormState,
+  formData: FormData,
+): Promise<AuthFormState> {
+  const input = parseSignup(formData)
+  if (!input.ok) return { error: input.error }
+  const { email, password, username, timezone } = input.value
+
+  const supabase = await createClient()
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    // Kept on the auth user so the profile row can be rebuilt if the insert below fails.
+    options: { data: { username, timezone } },
+  })
+
+  if (error) return { error: error.message }
+  // Supabase answers a signup for an existing email with an identity-less user.
+  if (!data.user || data.user.identities?.length === 0) {
+    return { error: 'An account with that email already exists.' }
+  }
+
+  await createUser({ userId: data.user.id, email, username, timezone })
+
+  // No session means the project requires email confirmation first.
+  if (!data.session) {
+    return { notice: 'Almost there — confirm the link we just emailed you, then sign in.' }
+  }
+
+  revalidatePath('/', 'layout')
+  redirect(ROUTES.dashboard)
+}
+
+export async function logout(): Promise<void> {
+  const supabase = await createClient()
+  await supabase.auth.signOut()
+
+  revalidatePath('/', 'layout')
+  redirect(ROUTES.login)
 }

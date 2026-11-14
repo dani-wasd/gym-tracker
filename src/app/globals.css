@@ -1,1 +1,130 @@
 @import "tailwindcss";
+
+/*
+ * Design language: the week is a loaded barbell.
+ * Surfaces are rubber gym flooring, text is chalk, hardware is iron/steel,
+ * and day states borrow the bumper-plate colour code.
+ */
+@theme {
+  --color-mat: #121110;
+  --color-mat-raised: #1c1a17;
+  --color-iron: #36322d;
+  --color-steel: #958f84;
+  --color-chalk: #ede8dd;
+  --color-plate-red: #d8402f;
+  --color-plate-yellow: #f0b429;
+  --color-plate-blue: #4a86e8;
+
+  --font-display: var(--font-big-shoulders), "Arial Narrow", sans-serif;
+  --font-stencil: var(--font-big-shoulders-stencil), var(--font-big-shoulders), sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "Cascadia Mono", monospace;
+
+  --animate-plate-load: plate-load 0.55s cubic-bezier(0.2, 0.9, 0.25, 1.15) backwards;
+  --animate-plate-pulse: plate-pulse 1.8s ease-in-out infinite;
+  --animate-plate-spin: plate-spin 9s linear infinite;
+  --animate-rise: rise 0.5s ease-out backwards;
+
+  @keyframes plate-load {
+    from {
+      opacity: 0;
+      transform: translateX(var(--plate-from, -3rem));
+    }
+  }
+  @keyframes plate-pulse {
+    50% {
+      box-shadow: 0 0 1.75rem 0.15rem rgb(240 180 41 / 0.55);
+    }
+  }
+  @keyframes plate-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(0.75rem);
+    }
+  }
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    min-height: 100dvh;
+    background-color: var(--color-mat);
+    /* Rubber-floor flecks: three sparse dot grids on co-prime tiles. */
+    background-image:
+      radial-gradient(circle at 23% 31%, rgb(237 232 221 / 0.13) 0 1px, transparent 1.6px),
+      radial-gradient(circle at 71% 64%, rgb(216 64 47 / 0.22) 0 1px, transparent 1.6px),
+      radial-gradient(circle at 47% 83%, rgb(74 134 232 / 0.2) 0 1px, transparent 1.6px);
+    background-size: 97px 113px, 151px 139px, 181px 167px;
+    color: var(--color-chalk);
+    font-family: var(--font-mono);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: var(--color-plate-yellow);
+    color: var(--color-mat);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-plate-yellow);
+    outline-offset: 3px;
+  }
+
+  button:not(:disabled),
+  summary {
+    cursor: pointer;
+  }
+}
+
+/* Small uppercase label that sits above headings and values. */
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-steel);
+}
+
+/* Poster-sized stencil heading. */
+@utility headline {
+  font-family: var(--font-stencil);
+  font-weight: 800;
+  line-height: 0.86;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+/* Diagonal hatch for a plate that never got lifted. */
+@utility plate-hatch {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgb(216 64 47 / 0.6) 0 3px,
+    transparent 3px 7px
+  );
+}
+
+/* Lets an SVG group rotate around its own centre. */
+@utility spin-origin {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
