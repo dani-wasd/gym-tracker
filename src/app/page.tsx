@@ -12,9 +12,9 @@ const DEMO_WEEK = buildWeekSummary({
   today: "2026-11-19",
   plannedMask: 0b0111110, // Mon–Fri
   sessions: [
-    { id: 1, date: "2026-11-16", startLabel: "5:02 PM", endLabel: "6:10 PM", minutes: 68, muscles: ["Chest", "Triceps"] },
-    { id: 2, date: "2026-11-18", startLabel: "7:15 AM", endLabel: "8:05 AM", minutes: 50, muscles: ["Legs"] },
-    { id: 3, date: "2026-11-15", startLabel: "10:30 AM", endLabel: "11:10 AM", minutes: 40, muscles: ["Abs"] },
+    { id: 1, date: "2026-11-16", startLabel: "5:02 PM", endLabel: "6:10 PM", minutes: 68, muscles: ["Chest", "Triceps"], exercises: [{ name: "Bench press", sets: "3 × 8 @ 60 kg" }, { name: "Triceps pushdown", sets: "3 × 12 @ 25 kg" }] },
+    { id: 2, date: "2026-11-18", startLabel: "7:15 AM", endLabel: "8:05 AM", minutes: 50, muscles: ["Quads", "Glutes"], exercises: [{ name: "Back squat", sets: "5 × 5 @ 80 kg" }] },
+    { id: 3, date: "2026-11-15", startLabel: "10:30 AM", endLabel: "11:10 AM", minutes: 40, muscles: ["Abs"], exercises: [] },
   ],
 });
 

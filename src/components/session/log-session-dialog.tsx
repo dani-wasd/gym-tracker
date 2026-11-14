@@ -9,6 +9,10 @@ import { Field } from "@/src/components/ui/field";
 import { FormMessage } from "@/src/components/ui/form-message";
 import { toDateTimeInputValue } from "@/src/lib/dates";
 import { MINUTE_MS, type MuscleGroup } from "@/src/lib/definitions";
+import { musclesOf } from "@/src/lib/exercises";
+import { toLoggedExercises, type DraftExercise } from "./exercise-draft";
+import { ExerciseList } from "./exercise-list";
+import { ExercisePicker } from "./exercise-picker";
 import { MusclePicker } from "./muscle-picker";
 
 /**
@@ -35,6 +39,7 @@ export function LogSessionDialog({ draft, ...handlers }: LogSessionDialogProps) 
       open={draft !== null}
       onClose={handlers.onClose}
       title={draft?.mode === "manual" ? "Log by hand" : "Rack it"}
+      size="wide"
     >
       {draft && <LogSessionForm draft={draft} {...handlers} />}
     </Dialog>
@@ -50,9 +55,21 @@ function LogSessionForm({
   const isManual = draft.mode === "manual";
   const [start, setStart] = useState(toDateTimeInputValue(new Date(draft.start)));
   const [end, setEnd] = useState(toDateTimeInputValue(new Date(draft.end)));
+  const [exercises, setExercises] = useState<DraftExercise[]>([]);
   const [muscles, setMuscles] = useState<MuscleGroup[]>([]);
   const [error, setError] = useState<string>();
   const [isSaving, startSaving] = useTransition();
+
+  const exerciseIds = exercises.map((entry) => entry.exerciseId);
+  const impliedMuscles = musclesOf(exerciseIds);
+  const hasContent = exercises.length > 0 || muscles.length > 0;
+
+  const toggleExercise = (exerciseId: string) =>
+    setExercises((current) =>
+      current.some((entry) => entry.exerciseId === exerciseId)
+        ? current.filter((entry) => entry.exerciseId !== exerciseId)
+        : [...current, { exerciseId, sets: [] }],
+    );
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -65,12 +82,19 @@ function LogSessionForm({
       return;
     }
 
+    const logged = toLoggedExercises(exercises);
+    if (!logged.ok) {
+      setError(logged.error);
+      return;
+    }
+
     startSaving(async () => {
       const result = await logWorkout({
         startTime: startTime.toISOString(),
         endTime: endTime.toISOString(),
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         muscles,
+        exercises: logged.value,
       });
       if (result.ok) onLogged();
       else setError(result.error);
@@ -105,11 +129,13 @@ function LogSessionForm({
         <TimerSummary draft={draft} />
       )}
 
-      <MusclePicker value={muscles} onChange={setMuscles} />
+      <ExercisePicker selectedIds={exerciseIds} onToggle={toggleExercise} />
+      <ExerciseList exercises={exercises} onChange={setExercises} />
+      <MusclePicker value={muscles} onChange={setMuscles} implied={impliedMuscles} />
       <FormMessage tone="error">{error}</FormMessage>
 
       <div className="flex flex-wrap items-center gap-3">
-        <Button type="submit" disabled={isSaving || muscles.length === 0}>
+        <Button type="submit" disabled={isSaving || !hasContent}>
           {isSaving ? "Logging…" : "Log it"}
         </Button>
         <Button variant="outline" onClick={onClose} disabled={isSaving}>

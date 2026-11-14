@@ -42,6 +42,13 @@ export type PlanTarget = "current" | "next";
  */
 export type DayStatus = "done" | "extra" | "missed" | "due" | "pending" | "rest";
 
+/** An exercise as it reads in the logbook, e.g. "Bench press · 3 × 8 @ 60 kg". */
+export interface SessionExercise {
+  name: string;
+  /** Sets in gym shorthand; empty when none were noted. */
+  sets: string;
+}
+
 /** One logged workout, already formatted in the lifter's own wall-clock time. */
 export interface Session {
   id: number;
@@ -50,6 +57,7 @@ export interface Session {
   endLabel: string;
   minutes: number;
   muscles: MuscleGroup[];
+  exercises: SessionExercise[];
 }
 
 export interface WeekDay {

@@ -85,6 +85,11 @@ function DayReadout({ day, compact }: { day: WeekDay; compact: boolean }) {
               {session.startLabel} → {session.endLabel}
             </span>{" "}
             · {session.minutes} min · {session.muscles.join(" / ")}
+            {session.exercises.length > 0 && (
+              <span className="block">
+                {session.exercises.map((exercise) => exercise.name).join(", ")}
+              </span>
+            )}
           </li>
         ))}
       </ul>

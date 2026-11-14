@@ -8,6 +8,13 @@
       "when": 1772964179153,
       "tag": "0000_solid_prowler",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794700122163,
+      "tag": "0001_special_pretty_boy",
+      "breakpoints": true
     }
   ]
 }

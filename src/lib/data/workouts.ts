@@ -1,7 +1,8 @@
 import { and, desc, eq, gte, lte, sql } from "drizzle-orm";
 import { db } from "@/src/lib/db/connection";
 import { workouts, type Workout } from "@/src/lib/db/schemas";
-import { MINUTE_MS, type MuscleGroup } from "@/src/lib/definitions";
+import { MINUTE_MS, normalizeMuscles } from "@/src/lib/definitions";
+import { describeSets, exerciseById } from "@/src/lib/exercises";
 import { type DateString, formatTimeInTimezone } from "@/src/lib/dates";
 import type { ValidWorkout } from "@/src/lib/validation";
 import type { Session } from "@/src/lib/week";
@@ -19,6 +20,7 @@ export async function insertWorkout(
     localDate: workout.localDate,
     recordedTimezone: workout.timezone,
     musclesWorked: workout.muscles,
+    exercises: workout.exercises.length > 0 ? workout.exercises : null,
   });
 }
 
@@ -67,7 +69,11 @@ function toSession(workout: Workout): Session {
     startLabel: formatTimeInTimezone(startTime, recordedTimezone),
     endLabel: formatTimeInTimezone(endTime, recordedTimezone),
     minutes: Math.round((endTime.getTime() - startTime.getTime()) / MINUTE_MS),
-    muscles: (workout.musclesWorked ?? []) as MuscleGroup[],
+    muscles: normalizeMuscles(workout.musclesWorked ?? []),
+    exercises: (workout.exercises ?? []).flatMap(({ exerciseId, sets }) => {
+      const known = exerciseById(exerciseId);
+      return known ? [{ name: known.name, sets: describeSets(sets) }] : [];
+    }),
   };
 }
 

@@ -1,5 +1,6 @@
-import { pgTable, serial, uuid, integer, timestamp, text, index, check } from 'drizzle-orm/pg-core';
+import { pgTable, serial, uuid, integer, timestamp, text, jsonb, index, check } from 'drizzle-orm/pg-core';
 import { sql } from 'drizzle-orm';
+import type { LoggedExercise } from '../../exercises';
 import { users } from './users.schema';
 import { weeklySchedules } from './weekly_schedules.schema';
 
@@ -15,6 +16,8 @@ export const workouts = pgTable('workouts', {
     localDate: text('local_date').notNull(),
     recordedTimezone: text('recorded_timezone').notNull(),
     musclesWorked: text('muscles_worked').array(),
+    // Exercises and their sets, when the lifter noted them. Null on older rows.
+    exercises: jsonb('exercises').$type<LoggedExercise[]>(),
   }, (table) => [
     check('time_check', sql`${table.startTime} < ${table.endTime}`),
     index('workouts_user_date_idx').on(table.userId, table.localDate),
