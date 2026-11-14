@@ -59,7 +59,7 @@ export function SessionConsole() {
       <div className="flex flex-col items-center gap-4 text-center sm:items-start sm:text-left">
         <p className="eyebrow">Session</p>
         <h2 className="headline text-6xl">
-          {startedAt ? "On the clock" : "Bar's waiting"}
+          {startedAt ? "On the clock" : "Rack's waiting"}
         </h2>
         <p className="max-w-xs text-sm text-steel">
           {startedAt

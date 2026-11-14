@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { savePlan } from "@/src/app/(app)/dashboard/actions";
-import { Barbell, BarbellSlot, Plate } from "@/src/components/barbell/barbell";
+import { Dumbbell, Rack, RackSlot } from "@/src/components/rack/rack";
 import { Button } from "@/src/components/ui/button";
 import { FormMessage } from "@/src/components/ui/form-message";
 import { cn } from "@/src/lib/cn";
@@ -26,7 +26,7 @@ export interface PlannableWeek {
   isSaved: boolean;
 }
 
-/** Load plates onto an empty bar to plan a week, then lock it in. */
+/** Set dumbbells on an empty rack to plan a week, then lock it in. */
 export function WeekPlanner({ weeks }: { weeks: PlannableWeek[] }) {
   const [activeTarget, setActiveTarget] = useState(weeks[0].target);
   const active = weeks.find((week) => week.target === activeTarget) ?? weeks[0];
@@ -78,26 +78,26 @@ function PlanEditor({ week }: { week: PlannableWeek }) {
 
   return (
     <>
-      <Barbell className="mt-4 h-32 sm:h-40">
+      <Rack className="mt-6">
         {DAYS.map((day, index) => {
           const planned = isDayPlanned(plannedDays, index);
           return (
-            <BarbellSlot key={day} label={day[0]}>
-              <Plate
-                look={planned ? "solid" : "stub"}
+            <RackSlot key={day} label={day[0]}>
+              <Dumbbell
+                look={planned ? "solid" : "empty"}
                 disabled={isLocked || isSaving}
                 aria-label={day}
                 aria-pressed={planned}
                 onClick={() => setPlannedDays((mask) => toggleDay(mask, index))}
                 className={cn(!isLocked && "hover:opacity-70")}
               />
-            </BarbellSlot>
+            </RackSlot>
           );
         })}
-      </Barbell>
+      </Rack>
 
       <p className="text-sm text-steel">
-        {isLocked ? "Locked in: " : "Tap a day to load or strip its plate. "}
+        {isLocked ? "Locked in: " : "Tap a day to rack or pull its dumbbell. "}
         <span className="text-chalk">
           {dayNames.length > 0 ? dayNames.join(" / ") : "rest week"}
         </span>

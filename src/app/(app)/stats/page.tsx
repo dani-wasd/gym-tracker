@@ -1,4 +1,4 @@
-import { PlateLegend } from "@/src/components/barbell/legend";
+import { RackLegend } from "@/src/components/rack/legend";
 import { MuscleSplit } from "@/src/components/stats/muscle-split";
 import { StatTile } from "@/src/components/stats/stat-tile";
 import { WeekHistory } from "@/src/components/stats/week-history";
@@ -57,7 +57,7 @@ export default async function StatsPage() {
         <p className="eyebrow">Week by week</p>
         <h2 className="headline mt-1 mb-6 text-5xl">The record</h2>
         <WeekHistory weeks={recent.weeks} />
-        <PlateLegend className="mt-6" />
+        <RackLegend className="mt-6" />
       </section>
 
       <section>

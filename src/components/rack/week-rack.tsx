@@ -4,51 +4,52 @@ import { useState } from "react";
 import { cn } from "@/src/lib/cn";
 import { formatDate } from "@/src/lib/dates";
 import type { WeekDay, WeekSummary } from "@/src/lib/week";
-import { Barbell, BarbellSlot, Plate, type BarbellSize } from "./barbell";
+import { Dumbbell, Rack, RackSlot, type RackSize } from "./rack";
 import { STATUS_META } from "./status";
 
-interface WeekBarProps {
+interface WeekRackProps {
   summary: WeekSummary;
-  size?: BarbellSize;
+  size?: RackSize;
 }
 
 /**
- * A week drawn as a loaded bar: one plate per day, coloured by how the day
- * went. Hover, focus or tap a plate to read that day out underneath.
+ * A week drawn as a dumbbell rack: one dumbbell per day, coloured by how the
+ * day went. Hover, focus or tap one to pick it up and read that day out.
  */
-export function WeekBar({ summary, size = "lg" }: WeekBarProps) {
+export function WeekRack({ summary, size = "lg" }: WeekRackProps) {
   const todayIndex = summary.days.findIndex((day) => day.isToday);
   const [selectedIndex, setSelectedIndex] = useState(Math.max(todayIndex, 0));
   const selected = summary.days[selectedIndex];
 
   return (
     <div>
-      <Barbell size={size}>
+      <Rack size={size}>
         {summary.days.map((day) => {
           const meta = STATUS_META[day.status];
           const select = () => setSelectedIndex(day.index);
           return (
-            <BarbellSlot
+            <RackSlot
               key={day.date}
+              size={size}
               label={day.name[0]}
               caption={size === "lg" ? formatDate(day.date, "d") : undefined}
               marked={day.isToday}
             >
-              <Plate
+              <Dumbbell
                 look={meta.look}
                 size={size}
                 lifted={day.index === selectedIndex}
-                loadOrder={day.index}
+                rackOrder={day.index}
                 aria-label={`${formatDate(day.date, "EEEE d MMMM")}: ${meta.label}`}
                 aria-pressed={day.index === selectedIndex}
                 onClick={select}
                 onMouseEnter={select}
                 onFocus={select}
               />
-            </BarbellSlot>
+            </RackSlot>
           );
         })}
-      </Barbell>
+      </Rack>
       <DayReadout day={selected} compact={size === "sm"} />
     </div>
   );

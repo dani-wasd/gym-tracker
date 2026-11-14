@@ -1,5 +1,5 @@
-import { PlateLegend } from "@/src/components/barbell/legend";
-import { WeekBar } from "@/src/components/barbell/week-bar";
+import { RackLegend } from "@/src/components/rack/legend";
+import { WeekRack } from "@/src/components/rack/week-rack";
 import { Logbook } from "@/src/components/session/logbook";
 import { SessionConsole } from "@/src/components/session/session-console";
 import { PageHeader } from "@/src/components/ui/page-header";
@@ -54,8 +54,8 @@ export default async function DashboardPage() {
           title={formatWeekRange(week.weekStart, week.weekEnd)}
           subtitle={describeWeek(week)}
         />
-        <WeekBar summary={week} />
-        <PlateLegend className="mt-8" />
+        <WeekRack summary={week} />
+        <RackLegend className="mt-8" />
       </section>
 
       <SessionConsole />

@@ -1,5 +1,5 @@
 import { removeFriendship } from "@/src/app/(app)/friends/actions";
-import { WeekBar } from "@/src/components/barbell/week-bar";
+import { WeekRack } from "@/src/components/rack/week-rack";
 import { ConfirmButton } from "@/src/components/ui/confirm-button";
 import { describeWeek, type WeekSummary } from "@/src/lib/week";
 
@@ -31,7 +31,7 @@ export function FriendRow({ friend }: { friend: FriendWeek }) {
         </p>
       </div>
 
-      <WeekBar summary={friend.week} size="sm" />
+      <WeekRack summary={friend.week} size="sm" />
 
       <form action={removeFriendship.bind(null, friend.friendshipId)} className="mt-3 flex justify-end">
         <ConfirmButton>Drop from rack</ConfirmButton>

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /*
- * Design language: the week is a loaded barbell.
+ * Design language: the week is a dumbbell rack, one dumbbell per day.
  * Surfaces are rubber gym flooring, text is chalk, hardware is iron/steel,
  * and day states borrow the bumper-plate colour code.
  */
@@ -19,15 +19,15 @@
   --font-stencil: var(--font-big-shoulders-stencil), var(--font-big-shoulders), sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, "Cascadia Mono", monospace;
 
-  --animate-plate-load: plate-load 0.55s cubic-bezier(0.2, 0.9, 0.25, 1.15) backwards;
+  --animate-rack-set: rack-set 0.5s cubic-bezier(0.2, 0.9, 0.25, 1.2) backwards;
   --animate-plate-pulse: plate-pulse 1.8s ease-in-out infinite;
   --animate-plate-spin: plate-spin 9s linear infinite;
   --animate-rise: rise 0.5s ease-out backwards;
 
-  @keyframes plate-load {
+  @keyframes rack-set {
     from {
       opacity: 0;
-      transform: translateX(var(--plate-from, -3rem));
+      transform: translateY(-1.5rem);
     }
   }
   @keyframes plate-pulse {
@@ -104,7 +104,7 @@
   text-transform: uppercase;
 }
 
-/* Diagonal hatch for a plate that never got lifted. */
+/* Diagonal hatch for a dumbbell that never got lifted. */
 @utility plate-hatch {
   background-image: repeating-linear-gradient(
     -45deg,
