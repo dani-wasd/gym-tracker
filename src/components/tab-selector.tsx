@@ -8,6 +8,7 @@ import { ROUTES } from "@/src/lib/routes";
 const TABS = [
   { href: ROUTES.dashboard, label: "My week" },
   { href: ROUTES.friends, label: "The rack" },
+  { href: ROUTES.stats, label: "The numbers" },
 ];
 
 export default function TabSelector() {

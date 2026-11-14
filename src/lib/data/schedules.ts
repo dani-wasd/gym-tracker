@@ -2,6 +2,7 @@ import { and, desc, eq, lte } from "drizzle-orm";
 import { db } from "@/src/lib/db/connection";
 import { weeklySchedules } from "@/src/lib/db/schemas";
 import type { DateString } from "@/src/lib/dates";
+import type { PlanRecord } from "@/src/lib/stats";
 import { EMPTY_MASK } from "@/src/lib/week";
 
 export type WeeklySchedule = typeof weeklySchedules.$inferSelect;
@@ -76,4 +77,24 @@ export async function ensureSchedule(
   const created = await getSchedule(userId, weekStart);
   if (!created) throw new Error("Failed to create weekly schedule.");
   return created;
+}
+
+/** Every plan saved for `weekStart` or earlier, oldest first. */
+export async function getPlansUpTo(
+  userId: string,
+  weekStart: DateString,
+): Promise<PlanRecord[]> {
+  return db
+    .select({
+      weekStart: weeklySchedules.weekStartDate,
+      plannedDays: weeklySchedules.plannedDays,
+    })
+    .from(weeklySchedules)
+    .where(
+      and(
+        eq(weeklySchedules.userId, userId),
+        lte(weeklySchedules.weekStartDate, weekStart),
+      ),
+    )
+    .orderBy(weeklySchedules.weekStartDate);
 }

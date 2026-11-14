@@ -4,10 +4,11 @@ export const ROUTES = {
   signup: "/signup",
   dashboard: "/dashboard",
   friends: "/friends",
+  stats: "/stats",
 } as const;
 
 /** Signed-out visitors get bounced to login from these. */
-const PROTECTED_PREFIXES = [ROUTES.dashboard, ROUTES.friends];
+const PROTECTED_PREFIXES = [ROUTES.dashboard, ROUTES.friends, ROUTES.stats];
 
 /** Signed-in users have no business here and go straight to the dashboard. */
 const GUEST_ONLY_ROUTES: string[] = [ROUTES.home, ROUTES.login, ROUTES.signup];

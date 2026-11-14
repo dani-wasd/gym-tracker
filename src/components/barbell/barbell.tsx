@@ -106,16 +106,14 @@ const plateStyles = cva(
 
 export type PlateLook = NonNullable<VariantProps<typeof plateStyles>["look"]>;
 
-interface PlateProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof plateStyles> {
+interface PlateShapeProps extends VariantProps<typeof plateStyles> {
   look: PlateLook;
   /** Position on the bar (0–6); staggers the slide-on animation when set. */
   loadOrder?: number;
 }
 
-/** A plate seen edge-on. The button is wider than the plate so it's easy to hit. */
-export function Plate({ look, size, lifted, loadOrder, className, ...props }: PlateProps) {
+/** A plate seen edge-on — just the shape. Use it directly on read-only bars. */
+export function PlateShape({ look, size, lifted, loadOrder }: PlateShapeProps) {
   const loadStyle =
     loadOrder === undefined
       ? undefined
@@ -124,6 +122,21 @@ export function Plate({ look, size, lifted, loadOrder, className, ...props }: Pl
           "--plate-from": loadOrder < 4 ? "-3rem" : "3rem",
         } as React.CSSProperties);
 
+  return (
+    <span
+      style={loadStyle}
+      className={cn(
+        plateStyles({ look, size, lifted }),
+        loadOrder !== undefined && "animate-plate-load",
+      )}
+    />
+  );
+}
+
+type PlateProps = PlateShapeProps & React.ButtonHTMLAttributes<HTMLButtonElement>;
+
+/** A plate you can press. The button is wider than the plate so it's easy to hit. */
+export function Plate({ look, size, lifted, loadOrder, className, ...props }: PlateProps) {
   return (
     <button
       type="button"
@@ -134,13 +147,7 @@ export function Plate({ look, size, lifted, loadOrder, className, ...props }: Pl
       )}
       {...props}
     >
-      <span
-        style={loadStyle}
-        className={cn(
-          plateStyles({ look, size, lifted }),
-          loadOrder !== undefined && "animate-plate-load",
-        )}
-      />
+      <PlateShape look={look} size={size} lifted={lifted} loadOrder={loadOrder} />
     </button>
   );
 }

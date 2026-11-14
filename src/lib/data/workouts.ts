@@ -1,4 +1,4 @@
-import { and, desc, eq, gte, lte } from "drizzle-orm";
+import { and, desc, eq, gte, lte, sql } from "drizzle-orm";
 import { db } from "@/src/lib/db/connection";
 import { workouts, type Workout } from "@/src/lib/db/schemas";
 import { MINUTE_MS, type MuscleGroup } from "@/src/lib/definitions";
@@ -69,4 +69,24 @@ function toSession(workout: Workout): Session {
     minutes: Math.round((endTime.getTime() - startTime.getTime()) / MINUTE_MS),
     muscles: (workout.musclesWorked ?? []) as MuscleGroup[],
   };
+}
+
+export interface WorkoutTotals {
+  sessions: number;
+  totalMinutes: number;
+  longestMinutes: number;
+}
+
+/** All-time totals, added up by the database. */
+export async function getWorkoutTotals(userId: string): Promise<WorkoutTotals> {
+  const minutes = sql<number>`extract(epoch from ${workouts.endTime} - ${workouts.startTime}) / 60`;
+  const [totals] = await db
+    .select({
+      sessions: sql<number>`count(*)`.mapWith(Number),
+      totalMinutes: sql<number>`coalesce(sum(${minutes}), 0)`.mapWith(Number),
+      longestMinutes: sql<number>`coalesce(max(${minutes}), 0)`.mapWith(Number),
+    })
+    .from(workouts)
+    .where(eq(workouts.userId, userId));
+  return totals;
 }
