@@ -28,8 +28,10 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
-  // refreshing the auth token
-  const { data: { user } } = await supabase.auth.getUser()
+  // Refreshes the auth token when it has expired, and verifies its signature
+  // locally — no round trip to Supabase on an ordinary request.
+  const { data } = await supabase.auth.getClaims()
+  const user = data?.claims.sub
 
   const { pathname } = request.nextUrl
   if (!user && isProtectedPath(pathname)) {

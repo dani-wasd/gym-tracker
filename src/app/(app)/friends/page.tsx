@@ -1,10 +1,11 @@
 import { AddFriendForm } from "@/src/components/friends/add-friend-form";
 import { FriendRow, type FriendWeek } from "@/src/components/friends/friend-row";
 import { RequestList } from "@/src/components/friends/request-list";
+import { PageHeader } from "@/src/components/ui/page-header";
 import { requireProfile } from "@/src/lib/auth";
 import { getFriendCircle, type FriendLink } from "@/src/lib/data/friends";
 import { timezoneOf } from "@/src/lib/data/users";
-import { getCurrentWeekSummary } from "@/src/lib/data/week-summary";
+import { getCurrentWeek } from "@/src/lib/data/week-summary";
 import { localClockLabel, timezoneOffsetLabel } from "@/src/lib/dates";
 
 async function toFriendWeek({ friendshipId, user }: FriendLink): Promise<FriendWeek> {
@@ -14,7 +15,7 @@ async function toFriendWeek({ friendshipId, user }: FriendLink): Promise<FriendW
     username: user.username,
     localClock: localClockLabel(timezone),
     offset: timezoneOffsetLabel(timezone),
-    week: await getCurrentWeekSummary(user),
+    week: (await getCurrentWeek(user)).summary,
   };
 }
 
@@ -25,10 +26,7 @@ export default async function FriendsPage() {
 
   return (
     <div className="flex flex-col gap-14">
-      <section>
-        <p className="eyebrow">Friends · each week runs on its owner&apos;s clock</p>
-        <h1 className="headline mt-2 text-[clamp(3.5rem,13vw,9rem)]">The rack</h1>
-      </section>
+      <PageHeader eyebrow="Friends · each week runs on its owner's clock" title="The rack" />
 
       <RequestList title="Wants on your rack" direction="incoming" requests={circle.incoming} />
 

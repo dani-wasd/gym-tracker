@@ -7,11 +7,24 @@ import { isValidTimezone } from "@/src/lib/dates";
 import { ROUTES } from "@/src/lib/routes";
 import type { User } from "@/src/lib/db/schemas";
 
-/** The signed-in Supabase user, or null. Cached per request. */
-export const getAuthUser = cache(async () => {
+interface AuthIdentity {
+  id: string;
+  email: string;
+  metadata: Record<string, unknown>;
+}
+
+/**
+ * Who is signed in, or null. Cached per request.
+ * `getClaims` checks the session token's signature locally, so unlike
+ * `getUser` this doesn't cost a network round trip on every page.
+ */
+export const getAuthIdentity = cache(async (): Promise<AuthIdentity | null> => {
   const supabase = await createClient();
-  const { data, error } = await supabase.auth.getUser();
-  return error ? null : data.user;
+  const { data, error } = await supabase.auth.getClaims();
+  if (error || !data?.claims.sub) return null;
+
+  const { sub, email, user_metadata } = data.claims;
+  return { id: sub, email: email ?? "", metadata: user_metadata ?? {} };
 });
 
 /**
@@ -19,25 +32,25 @@ export const getAuthUser = cache(async () => {
  * Server actions must call this instead of trusting a user id from the client.
  */
 export const requireProfile = cache(async (): Promise<User> => {
-  const authUser = await getAuthUser();
-  if (!authUser) redirect(ROUTES.login);
+  const identity = await getAuthIdentity();
+  if (!identity) redirect(ROUTES.login);
 
-  const profile = await getUserById(authUser.id);
+  const profile = await getUserById(identity.id);
   if (profile) return profile;
 
   // Signed up but the profile row never landed — rebuild it from signup metadata.
-  const metadata = authUser.user_metadata ?? {};
-  const email = authUser.email ?? "";
+  const { username, timezone } = identity.metadata;
   await createUser({
-    userId: authUser.id,
-    email,
-    username: metadata.username || email.split("@")[0] || "lifter",
-    timezone: isValidTimezone(metadata.timezone)
-      ? metadata.timezone
-      : DEFAULT_TIMEZONE,
+    userId: identity.id,
+    email: identity.email,
+    username:
+      typeof username === "string" && username
+        ? username
+        : identity.email.split("@")[0] || "lifter",
+    timezone: isValidTimezone(timezone) ? timezone : DEFAULT_TIMEZONE,
   });
 
-  const created = await getUserById(authUser.id);
+  const created = await getUserById(identity.id);
   if (!created) redirect("/error");
   return created;
 });
