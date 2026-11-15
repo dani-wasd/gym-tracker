@@ -88,7 +88,14 @@ export function RackSlot({ size = "lg", label, caption, marked, children }: Rack
 }
 
 /** How a dumbbell is drawn — callers map their own meaning onto these. */
-export type DumbbellLook = "solid" | "accent" | "alert" | "hatch" | "hollow" | "empty";
+export type DumbbellLook =
+  | "solid"
+  | "accent"
+  | "alert"
+  | "hatch"
+  | "hollow"
+  | "ghost"
+  | "empty";
 
 const LOOKS: Record<DumbbellLook, { box: string; head: string; handle: string }> = {
   solid: { box: "h-[64%]", head: "bg-chalk", handle: "bg-steel" },
@@ -104,6 +111,13 @@ const LOOKS: Record<DumbbellLook, { box: string; head: string; handle: string }>
     handle: "bg-plate-red/70",
   },
   hollow: { box: "h-[64%]", head: "border-2 border-steel bg-mat-raised", handle: "bg-iron" },
+  // A free spot asking to be filled: a dashed outline that fills in when the
+  // button around it is hovered or focused.
+  ghost: {
+    box: "h-[64%] group-hover:-translate-y-1 group-focus-visible:-translate-y-1",
+    head: "border-2 border-dashed border-steel/50 group-hover:border-solid group-hover:border-chalk group-hover:bg-chalk/40 group-focus-visible:border-solid group-focus-visible:border-chalk group-focus-visible:bg-chalk/40",
+    handle: "bg-iron group-hover:bg-steel group-focus-visible:bg-steel",
+  },
   // No dumbbell: just the bare cradle it would sit in.
   empty: { box: "h-1.5", head: "rounded-none bg-iron", handle: "h-full! bg-iron" },
 };
@@ -159,7 +173,7 @@ export function Dumbbell({ look, size, lifted, rackOrder, className, ...props }:
     <button
       type="button"
       className={cn(
-        "flex h-full items-end px-0.5 disabled:cursor-default sm:px-3",
+        "group flex h-full items-end px-0.5 disabled:cursor-default sm:px-3",
         size === "sm" && "px-1.5 sm:px-2",
         className,
       )}

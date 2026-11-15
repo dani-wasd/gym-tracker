@@ -81,15 +81,17 @@ function PlanEditor({ week }: { week: PlannableWeek }) {
       <Rack className="mt-6">
         {DAYS.map((day, index) => {
           const planned = isDayPlanned(plannedDays, index);
+          // While editing, free days show a dashed outline so it's clear they can be pressed.
+          const freeLook = isLocked ? "empty" : "ghost";
           return (
             <RackSlot key={day} label={day[0]}>
               <Dumbbell
-                look={planned ? "solid" : "empty"}
+                look={planned ? "solid" : freeLook}
                 disabled={isLocked || isSaving}
-                aria-label={day}
+                aria-label={`${day}: ${planned ? "planned, press to remove" : "free, press to plan"}`}
                 aria-pressed={planned}
                 onClick={() => setPlannedDays((mask) => toggleDay(mask, index))}
-                className={cn(!isLocked && "hover:opacity-70")}
+                className={cn(!isLocked && planned && "hover:opacity-70")}
               />
             </RackSlot>
           );
@@ -97,7 +99,7 @@ function PlanEditor({ week }: { week: PlannableWeek }) {
       </Rack>
 
       <p className="text-sm text-steel">
-        {isLocked ? "Locked in: " : "Tap a day to rack or pull its dumbbell. "}
+        {isLocked ? "Locked in: " : "Press a dashed outline to plan that day, or a dumbbell to take it off. "}
         <span className="text-chalk">
           {dayNames.length > 0 ? dayNames.join(" / ") : "rest week"}
         </span>
