@@ -62,7 +62,7 @@ export function FriendsSkeleton() {
               </div>
               <SkeletonText width="20ch" lines={2} className="eyebrow" />
             </div>
-            <div className="mt-5 flex items-center gap-4">
+            <div className="mt-6 flex items-center gap-5">
               <EmptyStack size="sm" />
               <div className="min-h-14 flex-1 border-l-4 border-iron pl-4">
                 <SkeletonText width="16ch" className="font-display text-xl" />

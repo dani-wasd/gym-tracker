@@ -16,7 +16,7 @@ export default function TabSelector() {
 
   return (
     <nav aria-label="Main">
-      <ul className="flex gap-6">
+      <ul className="flex gap-4 sm:gap-6">
         {TABS.map((tab) => {
           const isActive = pathname.startsWith(tab.href);
           return (
@@ -25,7 +25,7 @@ export default function TabSelector() {
                 href={tab.href}
                 aria-current={isActive ? "page" : undefined}
                 className={cn(
-                  "border-b-4 pb-1 font-display text-2xl leading-none font-extrabold uppercase tracking-wide transition-colors",
+                  "border-b-4 pb-1 font-display text-xl leading-none whitespace-nowrap sm:text-2xl font-extrabold uppercase tracking-wide transition-colors",
                   isActive
                     ? "border-plate-red text-chalk"
                     : "border-transparent text-steel hover:text-chalk",

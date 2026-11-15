@@ -27,7 +27,7 @@ export function WeekStack({ summary, size = "lg" }: WeekStackProps) {
     <div
       className={cn(
         "flex items-center",
-        compact ? "mt-5 gap-4" : "mt-8 flex-col items-start gap-8 sm:flex-row sm:items-center",
+        compact ? "mt-6 gap-5" : "mt-8 flex-col items-start gap-8 sm:flex-row sm:items-center",
       )}
     >
       <Stack size={size}>
@@ -40,7 +40,6 @@ export function WeekStack({ summary, size = "lg" }: WeekStackProps) {
               look={meta.look}
               size={size}
               label={`${day.name} ${formatDate(day.date, "d")}`}
-              marked={day.isToday}
               pinned={day.isToday}
               pulled={day.index === selectedIndex}
               stackOrder={day.index}

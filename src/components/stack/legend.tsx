@@ -10,7 +10,7 @@ export function StackLegend({ className }: { className?: string }) {
         const meta = STATUS_META[status];
         return (
           <li key={status} className="eyebrow flex items-center gap-2">
-            <span aria-hidden className="block w-6">
+            <span aria-hidden className="block w-7">
               <SlabShape look={meta.look} size="sm" />
             </span>
             {meta.label}

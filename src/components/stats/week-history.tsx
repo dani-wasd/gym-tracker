@@ -6,7 +6,7 @@ import { describeWeek, type WeekSummary } from "@/src/lib/week";
 /** Past weeks as a row of small weight stacks, newest first. */
 export function WeekHistory({ weeks }: { weeks: WeekSummary[] }) {
   return (
-    <ol className="grid grid-cols-2 gap-x-6 gap-y-10 border-y border-iron py-8 sm:grid-cols-4">
+    <ol className="grid grid-cols-2 gap-x-4 gap-y-10 border-y border-iron py-8 sm:grid-cols-3 lg:grid-cols-4">
       {weeks.map((week, index) => (
         <li key={week.weekStart} className="flex flex-col items-start gap-3">
           <Stack size="sm">
@@ -21,7 +21,7 @@ export function WeekHistory({ weeks }: { weeks: WeekSummary[] }) {
                   title={description}
                   className="relative z-10"
                 >
-                  <SlabShape look={meta.look} size="sm" />
+                  <SlabShape look={meta.look} size="sm" label={day.name} />
                 </span>
               );
             })}

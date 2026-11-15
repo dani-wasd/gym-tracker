@@ -36,7 +36,7 @@ const STEPS = [
 export default function HomePage() {
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-5xl flex-col px-5 sm:px-8">
-      <header className="flex items-center justify-between py-5">
+      <header className="flex items-baseline justify-between py-5">
         <Wordmark />
         <Link href={ROUTES.login} className={buttonStyles({ variant: "ghost", size: "sm", className: "px-0" })}>
           Sign in

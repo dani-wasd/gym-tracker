@@ -86,7 +86,7 @@ export async function HistorySection() {
 export function HistorySkeleton() {
   return (
     <LoadingRegion label="week by week">
-      <ul className="grid grid-cols-2 gap-x-6 gap-y-10 border-y border-iron py-8 sm:grid-cols-4">
+      <ul className="grid grid-cols-2 gap-x-4 gap-y-10 border-y border-iron py-8 sm:grid-cols-3 lg:grid-cols-4">
         {["9ch", "10ch", "8ch", "11ch"].map((width) => (
           <li key={width} className="flex flex-col items-start gap-3">
             <EmptyStack size="sm" />

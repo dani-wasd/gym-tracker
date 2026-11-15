@@ -10,10 +10,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-5xl flex-col px-5 sm:px-8">
-      <header className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4 border-b-2 border-iron py-5">
+      <header className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-4 border-b-2 border-iron py-5">
         <Wordmark />
         <TabSelector />
-        <form action={logout} className="flex items-center gap-3">
+        <form action={logout} className="flex items-baseline gap-3">
           <span className="eyebrow">{profile.username}</span>
           <Button type="submit" variant="ghost" size="sm" className="px-0">
             Sign out
