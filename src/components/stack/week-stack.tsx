@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { cn } from "@/src/lib/cn";
-import { formatDate } from "@/src/lib/dates";
+import { formatDate, type DateString } from "@/src/lib/dates";
 import type { WeekDay, WeekSummary } from "@/src/lib/week";
 import { Slab, Stack, type StackSize } from "./stack";
 import { STATUS_META } from "./status";
@@ -14,13 +14,23 @@ interface WeekStackProps {
 
 /**
  * A week drawn as a weight stack: one slab per day, coloured by how the day
- * went, with the selector pin in today. Hover, focus or tap a slab to read
- * that day out beside the stack.
+ * went, with the selector pin in today.
+ *
+ * Nothing is pulled out until the user picks: hovering previews a day while
+ * the pointer is on the stack, and pressing a slab keeps it out (press again
+ * to put it back). The readout shows the pulled-out day, or today otherwise.
  */
 export function WeekStack({ summary, size = "lg" }: WeekStackProps) {
-  const todayIndex = summary.days.findIndex((day) => day.isToday);
-  const [selectedIndex, setSelectedIndex] = useState(Math.max(todayIndex, 0));
-  const selected = summary.days[selectedIndex];
+  // Kept as dates rather than positions, so they can't point at the wrong day
+  // after the week rolls over under an open page.
+  const [chosenDate, setChosenDate] = useState<DateString | null>(null);
+  const [hoveredDate, setHoveredDate] = useState<DateString | null>(null);
+
+  const activeDate = hoveredDate ?? chosenDate;
+  const readoutDay =
+    summary.days.find((day) => day.date === activeDate) ??
+    summary.days.find((day) => day.isToday) ??
+    summary.days[0];
   const compact = size === "sm";
 
   return (
@@ -30,10 +40,12 @@ export function WeekStack({ summary, size = "lg" }: WeekStackProps) {
         compact ? "mt-6 gap-5" : "mt-8 flex-col items-start gap-8 sm:flex-row sm:items-center",
       )}
     >
-      <Stack size={size}>
+      {/* Leaving the whole stack (not each slab) ends the preview, so the
+          small gaps between slabs don't make the readout flicker. */}
+      <Stack size={size} onMouseLeave={() => setHoveredDate(null)}>
         {summary.days.map((day) => {
           const meta = STATUS_META[day.status];
-          const select = () => setSelectedIndex(day.index);
+          const isChosen = day.date === chosenDate;
           return (
             <Slab
               key={day.date}
@@ -41,18 +53,17 @@ export function WeekStack({ summary, size = "lg" }: WeekStackProps) {
               size={size}
               label={`${day.name} ${formatDate(day.date, "d")}`}
               pinned={day.isToday}
-              pulled={day.index === selectedIndex}
+              pulled={day.date === activeDate}
               stackOrder={day.index}
               aria-label={`${formatDate(day.date, "EEEE d MMMM")}: ${meta.label}`}
-              aria-pressed={day.index === selectedIndex}
-              onClick={select}
-              onMouseEnter={select}
-              onFocus={select}
+              aria-pressed={isChosen}
+              onClick={() => setChosenDate(isChosen ? null : day.date)}
+              onMouseEnter={() => setHoveredDate(day.date)}
             />
           );
         })}
       </Stack>
-      <DayReadout day={selected} compact={compact} />
+      <DayReadout day={readoutDay} compact={compact} />
     </div>
   );
 }

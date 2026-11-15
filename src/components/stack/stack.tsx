@@ -37,6 +37,8 @@ const BASE: Record<StackSize, string> = { lg: "mt-[3px] h-3", sm: "mt-0.5 h-1.5"
 interface StackProps {
   size?: StackSize;
   className?: string;
+  /** Fires when the pointer leaves the machine as a whole. */
+  onMouseLeave?: () => void;
   children: React.ReactNode;
 }
 
@@ -44,12 +46,15 @@ interface StackProps {
  * The machine: two uprights and a crossbar, a pulley with the cable coming
  * down to the top block, the slabs riding two guide rods, and a base.
  */
-export function Stack({ size = "lg", className, children }: StackProps) {
+export function Stack({ size = "lg", className, onMouseLeave, children }: StackProps) {
   const upright = cn("absolute inset-y-0 bg-iron", UPRIGHT[size]);
   const rod = "absolute inset-y-0 w-0.5 bg-steel/60";
 
   return (
-    <div className={cn("relative flex shrink-0 flex-col items-center", FRAME[size], className)}>
+    <div
+      onMouseLeave={onMouseLeave}
+      className={cn("relative flex shrink-0 flex-col items-center", FRAME[size], className)}
+    >
       <span aria-hidden className={cn(upright, "left-0")} />
       <span aria-hidden className={cn(upright, "right-0")} />
       <span aria-hidden className={cn("absolute inset-x-0 top-0 bg-iron", CROSSBAR[size])} />
