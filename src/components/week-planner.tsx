@@ -99,9 +99,9 @@ function PlanEditor({ week }: { week: PlannableWeek }) {
       </Stack>
 
       <p className="text-sm text-steel">
-        {isLocked ? "Locked in: " : "Press a dashed outline to plan that day, or a slab to take it off. "}
+        {isLocked ? "Planned: " : "Press a day to add or remove it. "}
         <span className="text-chalk">
-          {dayNames.length > 0 ? dayNames.join(" / ") : "rest week"}
+          {dayNames.length > 0 ? dayNames.join(" / ") : "no days"}
         </span>
       </p>
 
@@ -112,7 +112,7 @@ function PlanEditor({ week }: { week: PlannableWeek }) {
           </Button>
         ) : (
           <Button onClick={lockIn} disabled={isSaving}>
-            {isSaving ? "Locking…" : "Lock it in"}
+            {isSaving ? "Saving…" : "Save plan"}
           </Button>
         )}
         <FormMessage tone="error">{error}</FormMessage>

@@ -20,16 +20,16 @@ const DEMO_WEEK = buildWeekSummary({
 
 const STEPS = [
   {
-    title: "Stack next week",
-    body: "Pick the days you'll train. Each one adds a slab to next week's stack. Lock it in.",
+    title: "Plan the week",
+    body: "Pick the days you'll train next week and save the plan.",
   },
   {
-    title: "Lift it",
-    body: "Start the clock when you walk in, stop it when you rack it, tag what you trained.",
+    title: "Log the session",
+    body: "Time your workout or enter it afterwards. Add the exercises and sets if you want the detail.",
   },
   {
-    title: "Get seen",
-    body: "Friends see your stack on your clock — lifted, missed or still waiting. So do you see theirs.",
+    title: "Share it",
+    body: "Friends see which planned days you made and which you missed. You see theirs.",
   },
 ];
 
@@ -46,20 +46,17 @@ export default function HomePage() {
       <main className="flex flex-1 flex-col gap-16 py-10 sm:gap-20 sm:py-16">
         <section>
           <h1 className="headline text-[clamp(4rem,17vw,12rem)]">
-            Plan it.
+            Said you&apos;d go?
             <br />
-            Lift it.
-            <br />
-            <span className="text-plate-red">Get seen.</span>
+            <span className="text-plate-red">Go.</span>
           </h1>
           <p className="mt-6 max-w-lg text-steel">
-            A gym tracker where your week is a weight stack. Plan the days,
-            move them one by one, and let your friends see exactly which
-            ones you left sitting there.
+            Plan your training days. Log what you did. Friends see the
+            difference.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <Link href={ROUTES.signup} className={buttonStyles({ size: "lg" })}>
-              Start lifting
+              Create account
             </Link>
             <Link href={ROUTES.login} className={buttonStyles({ variant: "outline", size: "lg" })}>
               Sign in
@@ -68,7 +65,7 @@ export default function HomePage() {
         </section>
 
         <section>
-          <p className="eyebrow">Try it · hover a slab</p>
+          <p className="eyebrow">Example week · hover a day</p>
           <WeekStack summary={DEMO_WEEK} />
           <StackLegend className="mt-8" />
         </section>

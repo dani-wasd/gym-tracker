@@ -6,9 +6,9 @@ import { cn } from "@/src/lib/cn";
 import { ROUTES } from "@/src/lib/routes";
 
 const TABS = [
-  { href: ROUTES.dashboard, label: "My week" },
-  { href: ROUTES.friends, label: "The rack" },
-  { href: ROUTES.stats, label: "The numbers" },
+  { href: ROUTES.dashboard, label: "Week" },
+  { href: ROUTES.friends, label: "Friends" },
+  { href: ROUTES.stats, label: "Stats" },
 ];
 
 export default function TabSelector() {

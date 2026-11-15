@@ -7,7 +7,7 @@ import { LoadingRegion, SkeletonText } from "@/src/components/ui/skeleton";
 import { requireProfile } from "@/src/lib/auth";
 import { getStatsReport, type StatsReport } from "@/src/lib/data/stats";
 
-/* The data-backed parts of "The numbers". All of them share one fetch. */
+/* The data-backed parts of the stats tab. All of them share one fetch. */
 
 const loadReport = cache(async () => getStatsReport(await requireProfile()));
 
@@ -28,22 +28,22 @@ function Tiles({ report }: { report?: StatsReport }) {
         label="Consistency"
         value={value(
           ({ recent }) =>
-            recent.consistency === null ? "—" : `${Math.round(recent.consistency * 100)}%`,
+            recent.consistency === null ? "–" : `${Math.round(recent.consistency * 100)}%`,
           "3ch",
         )}
         detail={detail(({ recent }) =>
           recent.consistency === null
             ? "No planned day has passed yet"
-            : `${recent.plannedDaysLifted} of ${recent.plannedDaysElapsed} planned days lifted`,
+            : `${recent.plannedDaysLifted} of ${recent.plannedDaysElapsed} planned days done`,
         )}
       />
       <StatTile
-        label="Clean weeks"
+        label="Week streak"
         value={value(({ recent }) => String(recent.cleanWeekStreak), "1.5ch")}
-        detail="In a row with no missed day"
+        detail="Weeks in a row with no missed day"
       />
       <StatTile
-        label="Sessions"
+        label="Workouts"
         value={value(({ allTime }) => String(allTime.sessions), "2ch")}
         detail={detail(({ allTime }) =>
           hasSessions
@@ -107,7 +107,7 @@ export async function SplitSection() {
   const { recent, allTime } = await loadReport();
 
   if (allTime.sessions === 0) {
-    return <p className="text-sm text-steel">Log a session and the split shows up here.</p>;
+    return <p className="text-sm text-steel">This fills in once you log a workout.</p>;
   }
   return <MuscleSplit split={recent.muscleSplit} />;
 }

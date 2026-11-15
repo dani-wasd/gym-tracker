@@ -7,7 +7,7 @@ import { ROUTES } from "@/src/lib/routes";
 export default function SignupPage() {
   return (
     <>
-      <h1 className="headline text-8xl">Join the rack</h1>
+      <h1 className="headline text-8xl">Sign up</h1>
 
       <AuthForm action={signup} submitLabel="Create account" includeTimezone>
         <Field
@@ -30,7 +30,7 @@ export default function SignupPage() {
       </AuthForm>
 
       <p className="text-sm text-steel">
-        Already lifting here?{" "}
+        Already have an account?{" "}
         <Link href={ROUTES.login} className="text-chalk underline underline-offset-4">
           Sign in
         </Link>

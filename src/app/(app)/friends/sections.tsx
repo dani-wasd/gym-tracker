@@ -9,7 +9,7 @@ import { timezoneOf } from "@/src/lib/data/users";
 import { getCurrentWeek } from "@/src/lib/data/week-summary";
 import { localClockLabel, timezoneOffsetLabel } from "@/src/lib/dates";
 
-/* The data-backed parts of "The rack". All three lists share one fetch. */
+/* The data-backed parts of the friends tab. All three lists share one fetch. */
 
 const loadCircle = cache(async () => {
   const profile = await requireProfile();
@@ -34,8 +34,8 @@ export async function FriendsSection() {
   if (friends.length === 0) {
     return (
       <p className="max-w-md text-sm text-steel">
-        Rack&apos;s empty. Add someone below — once they accept, their week sits
-        here and yours sits on theirs. Nobody skips quietly.
+        No friends yet. Send a request below. Once they accept, you&apos;ll see
+        each other&apos;s week.
       </p>
     );
   }
@@ -78,10 +78,10 @@ export function FriendsSkeleton() {
 
 export async function IncomingRequests() {
   const { incoming } = await loadCircle();
-  return <RequestList title="Wants on your rack" direction="incoming" requests={incoming} />;
+  return <RequestList title="Requests for you" direction="incoming" requests={incoming} />;
 }
 
 export async function OutgoingRequests() {
   const { outgoing } = await loadCircle();
-  return <RequestList title="Waiting on them" direction="outgoing" requests={outgoing} />;
+  return <RequestList title="Requests you sent" direction="outgoing" requests={outgoing} />;
 }

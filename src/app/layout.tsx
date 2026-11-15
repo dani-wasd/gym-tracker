@@ -22,7 +22,7 @@ const mono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   title: "Gym Tracker",
-  description: "A gym app to track your personal workouts, keep your friends in check, making sure everyone is consistent.",
+  description: "Plan your training days, log your workouts, and let friends see whether you showed up.",
 };
 
 export default function RootLayout({

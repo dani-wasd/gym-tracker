@@ -19,7 +19,7 @@ const UUID_PATTERN =
 // Same answer whether or not the account exists, so emails can't be probed.
 const REQUEST_SENT: ActionResult = {
   ok: true,
-  message: "Sent. If that lifter is on here, they'll see your request.",
+  message: "Sent. If that email has an account, they'll see your request.",
 };
 
 export async function sendFriendRequest(
@@ -31,7 +31,7 @@ export async function sendFriendRequest(
   const email = normalizeEmail(formData.get("email"));
   if (!email) return { ok: false, error: "Enter a valid email address." };
   if (email === profile.email.toLowerCase()) {
-    return { ok: false, error: "You can't spot yourself." };
+    return { ok: false, error: "That's your own email." };
   }
 
   const target = await findUserByEmail(email);

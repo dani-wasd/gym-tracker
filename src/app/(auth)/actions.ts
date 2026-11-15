@@ -54,7 +54,7 @@ export async function signup(
 
   // No session means the project requires email confirmation first.
   if (!data.session) {
-    return { notice: 'Almost there — confirm the link we just emailed you, then sign in.' }
+    return { notice: 'Check your email for a confirmation link, then sign in.' }
   }
 
   revalidatePath('/', 'layout')

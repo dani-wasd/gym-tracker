@@ -13,7 +13,7 @@ interface PlateDialProps {
   onClick: () => void;
 }
 
-const RIM_TEXT = "GYM TRACKER · 25 KG · RACK THE WEEK · LIFT THE WEEK ·";
+const RIM_TEXT = "GYM TRACKER · 25 KG · GYM TRACKER · 25 KG · 55 LB ·";
 
 /** The start/stop control: a bumper plate seen face-on that spins while you lift. */
 export function PlateDial({ spinning, label, sublabel, onClick }: PlateDialProps) {

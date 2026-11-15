@@ -51,10 +51,10 @@ export function formatDate(date: DateString, pattern: string): string {
   return format(parseISO(date), pattern);
 }
 
-/** e.g. "Nov 15 — 21", or "Nov 29 — Dec 5" when the week straddles months. */
+/** e.g. "Nov 15–21", or "Nov 29–Dec 5" when the week straddles months. */
 export function formatWeekRange(weekStart: DateString, weekEnd: DateString): string {
   const sameMonth = weekStart.slice(0, 7) === weekEnd.slice(0, 7);
-  return `${formatDate(weekStart, "MMM d")} — ${formatDate(weekEnd, sameMonth ? "d" : "MMM d")}`;
+  return `${formatDate(weekStart, "MMM d")}–${formatDate(weekEnd, sameMonth ? "d" : "MMM d")}`;
 }
 
 /** Value for an `<input type="datetime-local">`, in the browser's own timezone. */

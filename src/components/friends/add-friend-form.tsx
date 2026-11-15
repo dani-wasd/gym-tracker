@@ -19,7 +19,7 @@ export function AddFriendForm() {
             type="email"
             required
             autoComplete="off"
-            placeholder="spotter@example.com"
+            placeholder="friend@example.com"
           />
         </div>
         <Button type="submit" disabled={isSending}>
@@ -31,10 +31,10 @@ export function AddFriendForm() {
       {result?.ok && <FormMessage tone="notice">{result.message}</FormMessage>}
 
       <p className="border-l-4 border-plate-yellow pl-3 text-xs text-steel">
-        <span className="text-plate-yellow">Heads up:</span> friends see your week
-        on your local clock — the days you planned, when you trained and your UTC
-        offset. That narrows down roughly where in the world you are. Only add
-        people you&apos;re fine sharing that with.
+        <span className="text-plate-yellow">Note:</span> friends can see the days
+        you planned, the times you trained and your UTC offset. Together those
+        show roughly where in the world you are, so only add people you&apos;re
+        comfortable sharing that with.
       </p>
     </form>
   );

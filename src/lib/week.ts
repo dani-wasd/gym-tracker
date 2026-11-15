@@ -133,7 +133,7 @@ export function buildWeekSummary(input: {
   };
 }
 
-/** One-line verdict on a week, e.g. "2 of 4 lifted · 1 missed · due today". */
+/** One-line verdict on a week, e.g. "2 of 4 done · 1 missed · due today". */
 export function describeWeek(summary: WeekSummary): string {
   if (summary.plannedCount === 0) {
     return summary.extraCount > 0
@@ -141,7 +141,7 @@ export function describeWeek(summary: WeekSummary): string {
       : "Nothing planned";
   }
 
-  const parts = [`${summary.doneCount} of ${summary.plannedCount} lifted`];
+  const parts = [`${summary.doneCount} of ${summary.plannedCount} done`];
   if (summary.missedCount > 0) parts.push(`${summary.missedCount} missed`);
   if (summary.extraCount > 0) parts.push(`${summary.extraCount} extra`);
   if (summary.days.some((day) => day.status === "due")) parts.push("due today");

@@ -29,7 +29,7 @@ export async function WeekSection() {
   return (
     <>
       <PageHeader
-        eyebrow={`${WEEK_EYEBROW} · your clock is ${timezoneOffsetLabel(timezoneOf(profile))}`}
+        eyebrow={`${WEEK_EYEBROW} · ${timezoneOffsetLabel(timezoneOf(profile))}`}
         title={formatWeekRange(summary.weekStart, summary.weekEnd)}
         subtitle={describeWeek(summary)}
       />

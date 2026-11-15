@@ -21,10 +21,10 @@ export function ConfirmButton({ children }: { children: React.ReactNode }) {
   return (
     <span className="flex items-center gap-4">
       <Button type="submit" variant="danger" size="sm">
-        Sure?
+        Confirm
       </Button>
       <Button variant="ghost" size="sm" className="px-0" onClick={() => setIsArmed(false)}>
-        Keep
+        Cancel
       </Button>
     </span>
   );

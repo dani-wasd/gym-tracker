@@ -13,7 +13,7 @@ export interface FriendWeek {
   week: WeekSummary;
 }
 
-/** One friend on the rack: their week, judged on their own clock. */
+/** One friend: their week, judged on their own clock. */
 export function FriendRow({ friend }: { friend: FriendWeek }) {
   return (
     <li className="border-b border-iron py-8">
@@ -25,7 +25,7 @@ export function FriendRow({ friend }: { friend: FriendWeek }) {
           </p>
         </div>
         <p className="eyebrow text-right">
-          Their clock: {friend.localClock}
+          Their time: {friend.localClock}
           <br />
           {friend.offset}
         </p>
@@ -34,7 +34,7 @@ export function FriendRow({ friend }: { friend: FriendWeek }) {
       <WeekStack summary={friend.week} size="sm" />
 
       <form action={removeFriendship.bind(null, friend.friendshipId)} className="mt-3 flex justify-end">
-        <ConfirmButton>Drop from rack</ConfirmButton>
+        <ConfirmButton>Remove friend</ConfirmButton>
       </form>
     </li>
   );

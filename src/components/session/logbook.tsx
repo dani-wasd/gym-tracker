@@ -6,7 +6,7 @@ export function Logbook({ children }: { children: React.ReactNode }) {
   return (
     <section>
       <p className="eyebrow">Logbook</p>
-      <h2 className="headline mt-1 mb-6 text-5xl">Last lifts</h2>
+      <h2 className="headline mt-1 mb-6 text-5xl">Recent workouts</h2>
       {children}
     </section>
   );
@@ -37,7 +37,7 @@ function ExerciseDetails({ exercises }: { exercises: SessionExercise[] }) {
 export function LogbookEntries({ sessions }: { sessions: Session[] }) {
   if (sessions.length === 0) {
     return (
-      <p className="text-sm text-steel">Nothing logged yet. Your first session lands here.</p>
+      <p className="text-sm text-steel">No workouts logged yet.</p>
     );
   }
 

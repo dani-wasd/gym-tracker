@@ -15,7 +15,7 @@ interface StatusMeta {
 /** Single source of truth for how each day state reads and looks. */
 export const STATUS_META: Record<DayStatus, StatusMeta> = {
   done: {
-    label: "Lifted",
+    label: "Done",
     hint: "",
     look: "solid",
     tone: "text-chalk",
@@ -30,21 +30,21 @@ export const STATUS_META: Record<DayStatus, StatusMeta> = {
   },
   missed: {
     label: "Missed",
-    hint: "Planned. Never moved.",
+    hint: "Planned, but no workout was logged.",
     look: "hatch",
     tone: "text-plate-red",
     rule: "border-plate-red",
   },
   due: {
     label: "Due today",
-    hint: "The pin is in today. Not lifted yet.",
+    hint: "Planned for today. Nothing logged yet.",
     look: "alert",
     tone: "text-plate-yellow",
     rule: "border-plate-yellow",
   },
   pending: {
     label: "Planned",
-    hint: "Planned. Its day hasn't come.",
+    hint: "Planned for later this week.",
     look: "hollow",
     tone: "text-steel",
     rule: "border-steel",

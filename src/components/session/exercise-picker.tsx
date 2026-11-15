@@ -51,7 +51,7 @@ export function ExercisePicker({ selectedIds, onToggle }: ExercisePickerProps) {
       <input
         type="search"
         aria-label="Search exercises"
-        placeholder="Search — bench, squat, curl…"
+        placeholder="Search exercises"
         value={search}
         onChange={(event) => setSearch(event.target.value)}
         className="mt-3 w-full border-b-2 border-iron bg-transparent py-2 font-mono text-base text-chalk transition-colors placeholder:text-steel/60 focus:border-chalk focus:outline-none"
@@ -60,7 +60,7 @@ export function ExercisePicker({ selectedIds, onToggle }: ExercisePickerProps) {
       <ul className="mt-2 max-h-44 overflow-y-auto border border-iron">
         {matches.length === 0 && (
           <li className="px-3 py-3 text-sm text-steel">
-            Nothing by that name. Tick the muscles below instead.
+            No exercise by that name. You can tick the muscles below instead.
           </li>
         )}
         {matches.map((entry) => {
@@ -79,7 +79,7 @@ export function ExercisePicker({ selectedIds, onToggle }: ExercisePickerProps) {
               >
                 <span>{entry.name}</span>
                 <span className={cn("text-xs", added ? "text-mat/70" : "text-steel")}>
-                  {added ? "Added ✓" : entry.primary}
+                  {added ? "Added" : entry.primary}
                 </span>
               </button>
             </li>
