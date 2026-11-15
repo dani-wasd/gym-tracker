@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { savePlan } from "@/src/app/(app)/dashboard/actions";
-import { Dumbbell, Rack, RackSlot } from "@/src/components/rack/rack";
+import { Slab, Stack } from "@/src/components/stack/stack";
 import { Button } from "@/src/components/ui/button";
 import { FormMessage } from "@/src/components/ui/form-message";
 import { cn } from "@/src/lib/cn";
@@ -26,7 +26,7 @@ export interface PlannableWeek {
   isSaved: boolean;
 }
 
-/** Set dumbbells on an empty rack to plan a week, then lock it in. */
+/** Add slabs to an empty stack to plan a week, then lock it in. */
 export function WeekPlanner({ weeks }: { weeks: PlannableWeek[] }) {
   const [activeTarget, setActiveTarget] = useState(weeks[0].target);
   const active = weeks.find((week) => week.target === activeTarget) ?? weeks[0];
@@ -78,28 +78,28 @@ function PlanEditor({ week }: { week: PlannableWeek }) {
 
   return (
     <>
-      <Rack className="mt-6">
+      <Stack className="mt-6 mb-4">
         {DAYS.map((day, index) => {
           const planned = isDayPlanned(plannedDays, index);
           // While editing, free days show a dashed outline so it's clear they can be pressed.
           const freeLook = isLocked ? "empty" : "ghost";
           return (
-            <RackSlot key={day} label={day[0]}>
-              <Dumbbell
-                look={planned ? "solid" : freeLook}
+            <Slab
+              key={day}
+              label={day}
+              look={planned ? "solid" : freeLook}
                 disabled={isLocked || isSaving}
                 aria-label={`${day}: ${planned ? "planned, press to remove" : "free, press to plan"}`}
                 aria-pressed={planned}
                 onClick={() => setPlannedDays((mask) => toggleDay(mask, index))}
                 className={cn(!isLocked && planned && "hover:opacity-70")}
-              />
-            </RackSlot>
+            />
           );
         })}
-      </Rack>
+      </Stack>
 
       <p className="text-sm text-steel">
-        {isLocked ? "Locked in: " : "Press a dashed outline to plan that day, or a dumbbell to take it off. "}
+        {isLocked ? "Locked in: " : "Press a dashed outline to plan that day, or a slab to take it off. "}
         <span className="text-chalk">
           {dayNames.length > 0 ? dayNames.join(" / ") : "rest week"}
         </span>

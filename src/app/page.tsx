@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { RackLegend } from "@/src/components/rack/legend";
-import { WeekRack } from "@/src/components/rack/week-rack";
+import { StackLegend } from "@/src/components/stack/legend";
+import { WeekStack } from "@/src/components/stack/week-stack";
 import { buttonStyles } from "@/src/components/ui/button";
 import { Wordmark } from "@/src/components/wordmark";
 import { ROUTES } from "@/src/lib/routes";
 import { buildWeekSummary } from "@/src/lib/week";
 
-/** A made-up week so visitors can play with the rack before signing up. */
+/** A made-up week so visitors can play with the stack before signing up. */
 const DEMO_WEEK = buildWeekSummary({
   weekStart: "2026-11-15",
   today: "2026-11-19",
@@ -20,8 +20,8 @@ const DEMO_WEEK = buildWeekSummary({
 
 const STEPS = [
   {
-    title: "Rack next week",
-    body: "Pick the days you'll train. Each one puts a dumbbell on next week's rack. Lock it in.",
+    title: "Stack next week",
+    body: "Pick the days you'll train. Each one adds a slab to next week's stack. Lock it in.",
   },
   {
     title: "Lift it",
@@ -29,7 +29,7 @@ const STEPS = [
   },
   {
     title: "Get seen",
-    body: "Friends see your rack on your clock — lifted, missed or still waiting. So do you see theirs.",
+    body: "Friends see your stack on your clock — lifted, missed or still waiting. So do you see theirs.",
   },
 ];
 
@@ -53,8 +53,8 @@ export default function HomePage() {
             <span className="text-plate-red">Get seen.</span>
           </h1>
           <p className="mt-6 max-w-lg text-steel">
-            A gym tracker where your week is a dumbbell rack. Plan the days,
-            lift them off one by one, and let your friends see exactly which
+            A gym tracker where your week is a weight stack. Plan the days,
+            move them one by one, and let your friends see exactly which
             ones you left sitting there.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
@@ -68,9 +68,9 @@ export default function HomePage() {
         </section>
 
         <section>
-          <p className="eyebrow">Try it · pick one up</p>
-          <WeekRack summary={DEMO_WEEK} />
-          <RackLegend className="mt-8" />
+          <p className="eyebrow">Try it · hover a slab</p>
+          <WeekStack summary={DEMO_WEEK} />
+          <StackLegend className="mt-8" />
         </section>
 
         <ol className="grid gap-10 border-t-2 border-iron pt-10 sm:grid-cols-3">

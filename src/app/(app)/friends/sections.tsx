@@ -1,7 +1,7 @@
 import { cache } from "react";
 import { FriendRow, type FriendWeek } from "@/src/components/friends/friend-row";
 import { RequestList } from "@/src/components/friends/request-list";
-import { Rack } from "@/src/components/rack/rack";
+import { EmptyStack } from "@/src/components/stack/stack";
 import { LoadingRegion, SkeletonText } from "@/src/components/ui/skeleton";
 import { requireProfile } from "@/src/lib/auth";
 import { getFriendCircle, type FriendLink } from "@/src/lib/data/friends";
@@ -62,10 +62,12 @@ export function FriendsSkeleton() {
               </div>
               <SkeletonText width="20ch" lines={2} className="eyebrow" />
             </div>
-            <Rack size="sm">{null}</Rack>
-            <div className="min-h-14 border-l-4 border-iron pl-4">
-              <SkeletonText width="16ch" className="font-display text-xl" />
-              <SkeletonText width="28ch" className="mt-2 text-xs" />
+            <div className="mt-5 flex items-center gap-4">
+              <EmptyStack size="sm" />
+              <div className="min-h-14 flex-1 border-l-4 border-iron pl-4">
+                <SkeletonText width="16ch" className="font-display text-xl" />
+                <SkeletonText width="28ch" className="mt-2 text-xs" />
+              </div>
             </div>
           </li>
         ))}

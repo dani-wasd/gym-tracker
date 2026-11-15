@@ -1,9 +1,9 @@
-import { RackLegend } from "@/src/components/rack/legend";
+import { StackLegend } from "@/src/components/stack/legend";
 import { Logbook } from "@/src/components/session/logbook";
 import { SessionConsole } from "@/src/components/session/session-console";
 
 interface DashboardFrameProps {
-  /** This week's header and rack. */
+  /** This week's header and stack. */
   week: React.ReactNode;
   planner: React.ReactNode;
   logbook: React.ReactNode;
@@ -19,7 +19,7 @@ export function DashboardFrame({ week, planner, logbook }: DashboardFrameProps) 
     <div className="flex flex-col gap-16 sm:gap-20">
       <section>
         {week}
-        <RackLegend className="mt-8" />
+        <StackLegend className="mt-8" />
       </section>
 
       <SessionConsole />

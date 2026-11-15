@@ -1,11 +1,11 @@
 import type { DayStatus } from "@/src/lib/week";
-import type { DumbbellLook } from "./rack";
+import type { SlabLook } from "./stack";
 
 interface StatusMeta {
   label: string;
   /** Shown when the day has no sessions to list. */
   hint: string;
-  look: DumbbellLook;
+  look: SlabLook;
   /** Text colour for the label. */
   tone: string;
   /** Left rule colour of the day readout. */
@@ -30,14 +30,14 @@ export const STATUS_META: Record<DayStatus, StatusMeta> = {
   },
   missed: {
     label: "Missed",
-    hint: "Planned. Never left the rack.",
+    hint: "Planned. Never moved.",
     look: "hatch",
     tone: "text-plate-red",
     rule: "border-plate-red",
   },
   due: {
     label: "Due today",
-    hint: "Waiting on the rack today. Not lifted yet.",
+    hint: "The pin is in today. Not lifted yet.",
     look: "alert",
     tone: "text-plate-yellow",
     rule: "border-plate-yellow",

@@ -4,53 +4,56 @@ import { useState } from "react";
 import { cn } from "@/src/lib/cn";
 import { formatDate } from "@/src/lib/dates";
 import type { WeekDay, WeekSummary } from "@/src/lib/week";
-import { Dumbbell, Rack, RackSlot, type RackSize } from "./rack";
+import { Slab, Stack, type StackSize } from "./stack";
 import { STATUS_META } from "./status";
 
-interface WeekRackProps {
+interface WeekStackProps {
   summary: WeekSummary;
-  size?: RackSize;
+  size?: StackSize;
 }
 
 /**
- * A week drawn as a dumbbell rack: one dumbbell per day, coloured by how the
- * day went. Hover, focus or tap one to pick it up and read that day out.
+ * A week drawn as a weight stack: one slab per day, coloured by how the day
+ * went, with the selector pin in today. Hover, focus or tap a slab to read
+ * that day out beside the stack.
  */
-export function WeekRack({ summary, size = "lg" }: WeekRackProps) {
+export function WeekStack({ summary, size = "lg" }: WeekStackProps) {
   const todayIndex = summary.days.findIndex((day) => day.isToday);
   const [selectedIndex, setSelectedIndex] = useState(Math.max(todayIndex, 0));
   const selected = summary.days[selectedIndex];
+  const compact = size === "sm";
 
   return (
-    <div>
-      <Rack size={size}>
+    <div
+      className={cn(
+        "flex items-center",
+        compact ? "mt-5 gap-4" : "mt-8 flex-col items-start gap-8 sm:flex-row sm:items-center",
+      )}
+    >
+      <Stack size={size}>
         {summary.days.map((day) => {
           const meta = STATUS_META[day.status];
           const select = () => setSelectedIndex(day.index);
           return (
-            <RackSlot
+            <Slab
               key={day.date}
+              look={meta.look}
               size={size}
-              label={day.name[0]}
-              caption={size === "lg" ? formatDate(day.date, "d") : undefined}
+              label={`${day.name} ${formatDate(day.date, "d")}`}
               marked={day.isToday}
-            >
-              <Dumbbell
-                look={meta.look}
-                size={size}
-                lifted={day.index === selectedIndex}
-                rackOrder={day.index}
-                aria-label={`${formatDate(day.date, "EEEE d MMMM")}: ${meta.label}`}
-                aria-pressed={day.index === selectedIndex}
-                onClick={select}
-                onMouseEnter={select}
-                onFocus={select}
-              />
-            </RackSlot>
+              pinned={day.isToday}
+              pulled={day.index === selectedIndex}
+              stackOrder={day.index}
+              aria-label={`${formatDate(day.date, "EEEE d MMMM")}: ${meta.label}`}
+              aria-pressed={day.index === selectedIndex}
+              onClick={select}
+              onMouseEnter={select}
+              onFocus={select}
+            />
           );
         })}
-      </Rack>
-      <DayReadout day={selected} compact={size === "sm"} />
+      </Stack>
+      <DayReadout day={selected} compact={compact} />
     </div>
   );
 }
@@ -62,7 +65,7 @@ function DayReadout({ day, compact }: { day: WeekDay; compact: boolean }) {
     <div
       aria-live="polite"
       className={cn(
-        "border-l-4 pl-4 transition-colors",
+        "min-w-0 flex-1 border-l-4 pl-4 transition-colors",
         meta.rule,
         compact ? "min-h-14" : "min-h-24",
       )}

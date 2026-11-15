@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /*
- * Design language: the week is a dumbbell rack, one dumbbell per day.
+ * Design language: the week is a weight stack, one slab per day.
  * Surfaces are rubber gym flooring, text is chalk, hardware is iron/steel,
  * and day states borrow the bumper-plate colour code.
  */
@@ -104,7 +104,7 @@
   text-transform: uppercase;
 }
 
-/* Diagonal hatch for a dumbbell that never got lifted. */
+/* Diagonal hatch for a slab that never got lifted. */
 @utility plate-hatch {
   background-image: repeating-linear-gradient(
     -45deg,

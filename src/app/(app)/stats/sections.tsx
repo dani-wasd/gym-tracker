@@ -1,5 +1,5 @@
 import { cache } from "react";
-import { Rack } from "@/src/components/rack/rack";
+import { EmptyStack } from "@/src/components/stack/stack";
 import { MuscleSplit } from "@/src/components/stats/muscle-split";
 import { StatTile } from "@/src/components/stats/stat-tile";
 import { WeekHistory } from "@/src/components/stats/week-history";
@@ -86,19 +86,14 @@ export async function HistorySection() {
 export function HistorySkeleton() {
   return (
     <LoadingRegion label="week by week">
-      <ul className="border-t border-iron">
-        {["9ch", "10ch", "8ch"].map((width) => (
-          <li
-            key={width}
-            className="grid items-center gap-x-8 border-b border-iron py-4 sm:grid-cols-[13rem_1fr]"
-          >
+      <ul className="grid grid-cols-2 gap-x-6 gap-y-10 border-y border-iron py-8 sm:grid-cols-4">
+        {["9ch", "10ch", "8ch", "11ch"].map((width) => (
+          <li key={width} className="flex flex-col items-start gap-3">
+            <EmptyStack size="sm" />
             <div>
-              <SkeletonText width={width} className="font-display text-2xl" />
-              <SkeletonText width="20ch" className="mt-1 text-xs" />
+              <SkeletonText width={width} className="font-display text-xl" />
+              <SkeletonText width="16ch" className="mt-1 text-xs" />
             </div>
-            <Rack size="sm" className="mt-3 mb-5">
-              {null}
-            </Rack>
           </li>
         ))}
       </ul>

@@ -1,4 +1,4 @@
-import { RackLegend } from "@/src/components/rack/legend";
+import { StackLegend } from "@/src/components/stack/legend";
 import { PageHeader } from "@/src/components/ui/page-header";
 import { STATS_WEEKS } from "@/src/lib/data/stats";
 
@@ -23,7 +23,7 @@ export function StatsFrame({ tiles, history, split }: StatsFrameProps) {
         <p className="eyebrow">Week by week</p>
         <h2 className="headline mt-1 mb-6 text-5xl">The record</h2>
         {history}
-        <RackLegend className="mt-6" />
+        <StackLegend className="mt-6" />
       </section>
 
       <section>

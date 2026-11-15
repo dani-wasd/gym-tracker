@@ -1,5 +1,5 @@
-import { Rack } from "@/src/components/rack/rack";
-import { WeekRack } from "@/src/components/rack/week-rack";
+import { EmptyStack } from "@/src/components/stack/stack";
+import { WeekStack } from "@/src/components/stack/week-stack";
 import { LogbookEntries } from "@/src/components/session/logbook";
 import { PageHeader } from "@/src/components/ui/page-header";
 import { LoadingRegion, SkeletonText } from "@/src/components/ui/skeleton";
@@ -33,7 +33,7 @@ export async function WeekSection() {
         title={formatWeekRange(summary.weekStart, summary.weekEnd)}
         subtitle={describeWeek(summary)}
       />
-      <WeekRack summary={summary} />
+      <WeekStack summary={summary} />
     </>
   );
 }
@@ -46,10 +46,12 @@ export function WeekSkeleton() {
         title={<SkeletonText width="7ch" />}
         subtitle={<SkeletonText width="16ch" />}
       />
-      <Rack>{null}</Rack>
-      <div className="min-h-24 border-l-4 border-iron pl-4">
-        <SkeletonText width="14ch" className="font-display text-3xl sm:text-4xl" />
-        <SkeletonText width="26ch" className="mt-2 text-sm" />
+      <div className="mt-8 flex flex-col items-start gap-8 sm:flex-row sm:items-center">
+        <EmptyStack />
+        <div className="min-h-24 flex-1 border-l-4 border-iron pl-4">
+          <SkeletonText width="14ch" className="font-display text-3xl sm:text-4xl" />
+          <SkeletonText width="26ch" className="mt-2 text-sm" />
+        </div>
       </div>
     </LoadingRegion>
   );
@@ -96,7 +98,7 @@ export function PlannerSkeleton() {
       <p className="eyebrow">Planner</p>
       <h2 className="headline mt-1 text-5xl">Next week</h2>
       <LoadingRegion label="planner">
-        <Rack className="mt-6">{null}</Rack>
+        <EmptyStack className="mt-6 mb-4" />
         <SkeletonText width="34ch" className="text-sm" />
         <SkeletonText width="9ch" className="mt-4 text-4xl" />
       </LoadingRegion>
