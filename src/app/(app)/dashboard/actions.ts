@@ -56,7 +56,7 @@ export async function savePlan(
   if (target === "current") {
     const existing = await getEffectiveSchedule(profile.userId, currentWeek);
     if (existing) {
-      return { ok: false, error: "This week already has a plan." };
+      return { ok: false, error: "This week is already locked in." };
     }
     await upsertSchedule(profile.userId, currentWeek, plannedDays);
   } else {

@@ -15,7 +15,7 @@ interface StatusMeta {
 /** Single source of truth for how each day state reads and looks. */
 export const STATUS_META: Record<DayStatus, StatusMeta> = {
   done: {
-    label: "Done",
+    label: "Lifted",
     hint: "",
     look: "solid",
     tone: "text-chalk",
@@ -30,7 +30,7 @@ export const STATUS_META: Record<DayStatus, StatusMeta> = {
   },
   missed: {
     label: "Missed",
-    hint: "Planned, but no workout was logged.",
+    hint: "Planned. Never lifted.",
     look: "hatch",
     tone: "text-plate-red",
     rule: "border-plate-red",

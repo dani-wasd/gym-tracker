@@ -38,7 +38,7 @@ export function LogSessionDialog({ draft, ...handlers }: LogSessionDialogProps) 
     <Dialog
       open={draft !== null}
       onClose={handlers.onClose}
-      title={draft?.mode === "manual" ? "Log a workout" : "Finish workout"}
+      title={draft?.mode === "manual" ? "Log by hand" : "Rack it"}
       size="wide"
     >
       {draft && <LogSessionForm draft={draft} {...handlers} />}
@@ -138,7 +138,7 @@ function LogSessionForm({
           {isSaving ? "Saving…" : "Save workout"}
         </Button>
         <Button variant="outline" onClick={onClose} disabled={isSaving}>
-          {isManual ? "Cancel" : "Keep going"}
+          {isManual ? "Cancel" : "Keep lifting"}
         </Button>
         {!isManual && (
           <Button variant="ghost" size="sm" onClick={onScrap} disabled={isSaving} className="ml-auto">

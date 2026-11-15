@@ -34,11 +34,11 @@ function Tiles({ report }: { report?: StatsReport }) {
         detail={detail(({ recent }) =>
           recent.consistency === null
             ? "No planned day has passed yet"
-            : `${recent.plannedDaysLifted} of ${recent.plannedDaysElapsed} planned days done`,
+            : `${recent.plannedDaysLifted} of ${recent.plannedDaysElapsed} planned days lifted`,
         )}
       />
       <StatTile
-        label="Week streak"
+        label="Clean weeks"
         value={value(({ recent }) => String(recent.cleanWeekStreak), "1.5ch")}
         detail="Weeks in a row with no missed day"
       />

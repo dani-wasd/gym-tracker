@@ -7,7 +7,7 @@ import { ROUTES } from "@/src/lib/routes";
 export default function LoginPage() {
   return (
     <>
-      <h1 className="headline text-8xl">Sign in</h1>
+      <h1 className="headline text-8xl">Clock in</h1>
 
       <AuthForm action={login} submitLabel="Sign in">
         <Field label="Email" name="email" type="email" required autoComplete="email" />

@@ -59,7 +59,7 @@ export function SessionConsole() {
       <div className="flex flex-col items-center gap-4 text-center sm:items-start sm:text-left">
         <p className="eyebrow">Session</p>
         <h2 className="headline text-6xl">
-          {startedAt ? "In progress" : "Start a workout"}
+          {startedAt ? "On the clock" : "Start a workout"}
         </h2>
         <p className="max-w-xs text-sm text-steel">
           {startedAt
@@ -68,7 +68,7 @@ export function SessionConsole() {
         </p>
         {!startedAt && (
           <Button variant="outline" size="sm" onClick={openManualLog}>
-            Log a finished workout
+            Already lifted? Log it by hand
           </Button>
         )}
       </div>

@@ -18,7 +18,7 @@ export function FriendsFrame({ incoming, friends, outgoing }: FriendsFrameProps)
 
       <section>
         <p className="eyebrow">Add a friend</p>
-        <h2 className="headline mt-1 mb-6 text-5xl">Send a request</h2>
+        <h2 className="headline mt-1 mb-6 text-5xl">Call a spotter</h2>
         <AddFriendForm />
       </section>
 

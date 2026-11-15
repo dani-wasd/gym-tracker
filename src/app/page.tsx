@@ -21,7 +21,7 @@ const DEMO_WEEK = buildWeekSummary({
 const STEPS = [
   {
     title: "Plan the week",
-    body: "Pick the days you'll train next week and save the plan.",
+    body: "Pick the days you'll train next week and lock them in.",
   },
   {
     title: "Log the session",

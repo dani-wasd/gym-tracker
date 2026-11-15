@@ -32,7 +32,7 @@ export function AuthForm({ action, submitLabel, includeTimezone, children }: Aut
       <FormMessage tone="error">{state.error}</FormMessage>
       <FormMessage tone="notice">{state.notice}</FormMessage>
       <Button type="submit" size="lg" disabled={isPending}>
-        {isPending ? "Working…" : submitLabel}
+        {isPending ? "One sec…" : submitLabel}
       </Button>
     </form>
   );

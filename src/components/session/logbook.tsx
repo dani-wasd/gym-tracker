@@ -6,7 +6,7 @@ export function Logbook({ children }: { children: React.ReactNode }) {
   return (
     <section>
       <p className="eyebrow">Logbook</p>
-      <h2 className="headline mt-1 mb-6 text-5xl">Recent workouts</h2>
+      <h2 className="headline mt-1 mb-6 text-5xl">Last lifts</h2>
       {children}
     </section>
   );

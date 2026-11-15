@@ -30,7 +30,7 @@ export default function SignupPage() {
       </AuthForm>
 
       <p className="text-sm text-steel">
-        Already have an account?{" "}
+        Already lifting here?{" "}
         <Link href={ROUTES.login} className="text-chalk underline underline-offset-4">
           Sign in
         </Link>

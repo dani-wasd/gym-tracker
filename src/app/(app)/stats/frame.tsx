@@ -21,14 +21,14 @@ export function StatsFrame({ tiles, history, split }: StatsFrameProps) {
 
       <section>
         <p className="eyebrow">Week by week</p>
-        <h2 className="headline mt-1 mb-6 text-5xl">Past weeks</h2>
+        <h2 className="headline mt-1 mb-6 text-5xl">The record</h2>
         {history}
         <StackLegend className="mt-6" />
       </section>
 
       <section>
         <p className="eyebrow">Workouts per muscle group · last {STATS_WEEKS} weeks</p>
-        <h2 className="headline mt-1 mb-6 text-5xl">Muscles trained</h2>
+        <h2 className="headline mt-1 mb-6 text-5xl">The split</h2>
         {split}
       </section>
     </div>
