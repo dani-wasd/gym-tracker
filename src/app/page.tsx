@@ -45,12 +45,12 @@ export default function HomePage() {
 
       <main className="flex flex-1 flex-col gap-16 py-10 sm:gap-20 sm:py-16">
         <section>
-          <h1 className="headline text-[clamp(4rem,17vw,12rem)]">
-            Said you&apos;d go?
-            <br />
-            <span className="text-plate-red">Go.</span>
+          {/* One sentence per line: sized so the longer one never wraps. */}
+          <h1 className="headline text-[clamp(2.5rem,14.5vw,8.5rem)] whitespace-nowrap">
+            <span className="block">Said you&apos;d go?</span>
+            <span className="block text-plate-red">Go.</span>
           </h1>
-          <p className="mt-6 max-w-lg text-steel">
+          <p className="mt-6 max-w-2xl text-steel">
             Plan your training days. Log what you did. Friends see the
             difference.
           </p>
