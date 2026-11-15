@@ -1,5 +1,6 @@
 import { StackLegend } from "@/src/components/stack/legend";
 import { PageHeader } from "@/src/components/ui/page-header";
+import { Section } from "@/src/components/ui/section";
 import { STATS_WEEKS } from "@/src/lib/data/stats";
 
 interface StatsFrameProps {
@@ -8,29 +9,25 @@ interface StatsFrameProps {
   split: React.ReactNode;
 }
 
-/** The static parts of the stats tab, with slots for the parts that need data. */
+/** The static parts of the Stats tab, with slots for the parts that need data. */
 export function StatsFrame({ tiles, history, split }: StatsFrameProps) {
   return (
     <div className="flex flex-col gap-16">
-      <PageHeader
-        eyebrow={`Last ${STATS_WEEKS} weeks and all time`}
-        title="Stats"
-      />
+      <PageHeader eyebrow={`Last ${STATS_WEEKS} weeks and all time`} title="Stats" />
 
       {tiles}
 
-      <section>
-        <p className="eyebrow">Week by week</p>
-        <h2 className="headline mt-1 mb-6 text-5xl">The record</h2>
+      <Section eyebrow="Week by week" title="The record">
         {history}
         <StackLegend className="mt-6" />
-      </section>
+      </Section>
 
-      <section>
-        <p className="eyebrow">Workouts per muscle group · last {STATS_WEEKS} weeks</p>
-        <h2 className="headline mt-1 mb-6 text-5xl">The split</h2>
+      <Section
+        eyebrow={`Workouts per muscle group · last ${STATS_WEEKS} weeks`}
+        title="The split"
+      >
         {split}
-      </section>
+      </Section>
     </div>
   );
 }

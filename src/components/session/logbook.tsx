@@ -1,44 +1,10 @@
 import { formatDate } from "@/src/lib/dates";
 import type { Session, SessionExercise } from "@/src/lib/week";
 
-/** The logbook's heading; the entries (or their placeholder) go inside. */
-export function Logbook({ children }: { children: React.ReactNode }) {
-  return (
-    <section>
-      <p className="eyebrow">Logbook</p>
-      <h2 className="headline mt-1 mb-6 text-5xl">Last lifts</h2>
-      {children}
-    </section>
-  );
-}
-
-/** What was done in a session, folded away until asked for. */
-function ExerciseDetails({ exercises }: { exercises: SessionExercise[] }) {
-  if (exercises.length === 0) return null;
-
-  return (
-    <details className="col-span-full text-sm">
-      <summary className="eyebrow w-fit transition-colors hover:text-chalk">
-        {exercises.length} {exercises.length === 1 ? "exercise" : "exercises"}
-      </summary>
-      <ul className="mt-2 mb-1 border-l-4 border-iron pl-4">
-        {exercises.map((exercise) => (
-          <li key={exercise.name}>
-            {exercise.name}
-            {exercise.sets && <span className="text-steel"> · {exercise.sets}</span>}
-          </li>
-        ))}
-      </ul>
-    </details>
-  );
-}
-
 /** Most recent workouts, newest first. */
-export function LogbookEntries({ sessions }: { sessions: Session[] }) {
+export function Logbook({ sessions }: { sessions: Session[] }) {
   if (sessions.length === 0) {
-    return (
-      <p className="text-sm text-steel">No workouts logged yet.</p>
-    );
+    return <p className="text-sm text-steel">No workouts logged yet.</p>;
   }
 
   return (
@@ -62,5 +28,26 @@ export function LogbookEntries({ sessions }: { sessions: Session[] }) {
         </li>
       ))}
     </ol>
+  );
+}
+
+/** What was done in a session, folded away until asked for. */
+function ExerciseDetails({ exercises }: { exercises: SessionExercise[] }) {
+  if (exercises.length === 0) return null;
+
+  return (
+    <details className="col-span-full text-sm">
+      <summary className="eyebrow w-fit transition-colors hover:text-chalk">
+        {exercises.length} {exercises.length === 1 ? "exercise" : "exercises"}
+      </summary>
+      <ul className="mt-2 mb-1 border-l-4 border-iron pl-4">
+        {exercises.map((exercise) => (
+          <li key={exercise.name}>
+            {exercise.name}
+            {exercise.sets && <span className="text-steel"> · {exercise.sets}</span>}
+          </li>
+        ))}
+      </ul>
+    </details>
   );
 }

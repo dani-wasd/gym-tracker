@@ -2,6 +2,8 @@
 
 import { useState, useSyncExternalStore } from "react";
 import { Button } from "@/src/components/ui/button";
+import { inputStyles } from "@/src/components/ui/field";
+import { cn } from "@/src/lib/cn";
 
 export interface TimezoneOption {
   value: string;
@@ -34,7 +36,8 @@ export function TimezoneField({ name, defaultValue, options }: TimezoneFieldProp
           name={name}
           value={value}
           onChange={(event) => setValue(event.target.value)}
-          className="w-full border-b-2 border-iron bg-mat py-2 font-mono text-base text-chalk transition-colors focus:border-chalk focus:outline-none"
+          // An opaque background keeps the open option list readable.
+          className={cn(inputStyles, "bg-mat")}
         >
           {options.map((option) => (
             <option key={option.value} value={option.value}>
@@ -48,7 +51,7 @@ export function TimezoneField({ name, defaultValue, options }: TimezoneFieldProp
         Decides when your day starts and ends, and which day a workout counts for.
       </p>
       {canUseDevice && (
-        <Button variant="ghost" size="sm" onClick={() => setValue(device)} className="self-start px-0">
+        <Button variant="ghost" size="inline" onClick={() => setValue(device)} className="self-start">
           This device is on {device}. Use that
         </Button>
       )}

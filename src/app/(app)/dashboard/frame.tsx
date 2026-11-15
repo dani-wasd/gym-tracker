@@ -1,6 +1,6 @@
-import { StackLegend } from "@/src/components/stack/legend";
-import { Logbook } from "@/src/components/session/logbook";
 import { SessionConsole } from "@/src/components/session/session-console";
+import { StackLegend } from "@/src/components/stack/legend";
+import { Section } from "@/src/components/ui/section";
 
 interface DashboardFrameProps {
   /** This week's header and stack. */
@@ -10,9 +10,9 @@ interface DashboardFrameProps {
 }
 
 /**
- * Everything on "My week" that needs no data, with slots for the parts that
- * do. The page fills the slots with live sections; `loading.tsx` fills them
- * with placeholders, so the two always line up.
+ * Everything on the Week tab that needs no data, with slots for the parts
+ * that do. The page fills the slots with live sections; `loading.tsx` fills
+ * them with placeholders, so the two always line up.
  */
 export function DashboardFrame({ week, planner, logbook }: DashboardFrameProps) {
   return (
@@ -24,7 +24,10 @@ export function DashboardFrame({ week, planner, logbook }: DashboardFrameProps) 
 
       <SessionConsole />
       {planner}
-      <Logbook>{logbook}</Logbook>
+
+      <Section eyebrow="Logbook" title="Last lifts">
+        {logbook}
+      </Section>
     </div>
   );
 }

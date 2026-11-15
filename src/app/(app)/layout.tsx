@@ -1,12 +1,12 @@
-import { logout } from "@/src/app/(auth)/actions";
-import TabSelector from "@/src/components/tab-selector";
 import Link from "next/link";
+import { logout } from "@/src/app/(auth)/actions";
+import { TabSelector } from "@/src/components/shell/tab-selector";
+import { Wordmark } from "@/src/components/shell/wordmark";
 import { Button, buttonStyles } from "@/src/components/ui/button";
-import { Wordmark } from "@/src/components/wordmark";
 import { requireProfile } from "@/src/lib/auth";
 import { ROUTES } from "@/src/lib/routes";
 
-/** Shell for everything behind the login: header, tabs, sign-out. */
+/** Shell for everything behind the login: header, tabs, settings and sign-out. */
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const profile = await requireProfile();
 
@@ -17,14 +17,11 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         <TabSelector />
         <div className="flex items-baseline gap-4">
           <span className="eyebrow">{profile.username}</span>
-          <Link
-            href={ROUTES.settings}
-            className={buttonStyles({ variant: "ghost", size: "sm", className: "px-0" })}
-          >
+          <Link href={ROUTES.settings} className={buttonStyles({ variant: "ghost", size: "inline" })}>
             Settings
           </Link>
           <form action={logout}>
-            <Button type="submit" variant="ghost" size="sm" className="px-0">
+            <Button type="submit" variant="ghost" size="inline">
               Sign out
             </Button>
           </form>

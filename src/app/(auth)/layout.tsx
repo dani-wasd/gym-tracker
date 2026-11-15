@@ -1,4 +1,4 @@
-import { Wordmark } from "@/src/components/wordmark";
+import { Wordmark } from "@/src/components/shell/wordmark";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (

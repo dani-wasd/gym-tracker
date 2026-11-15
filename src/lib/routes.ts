@@ -6,6 +6,7 @@ export const ROUTES = {
   friends: "/friends",
   stats: "/stats",
   settings: "/settings",
+  error: "/error",
 } as const;
 
 /** Signed-out visitors get bounced to login from these. */

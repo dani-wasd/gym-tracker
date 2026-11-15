@@ -19,12 +19,11 @@
   --font-stencil: var(--font-big-shoulders-stencil), var(--font-big-shoulders), sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, "Cascadia Mono", monospace;
 
-  --animate-rack-set: rack-set 0.5s cubic-bezier(0.2, 0.9, 0.25, 1.2) backwards;
+  --animate-slab-drop: slab-drop 0.5s cubic-bezier(0.2, 0.9, 0.25, 1.2) backwards;
   --animate-plate-pulse: plate-pulse 1.8s ease-in-out infinite;
   --animate-plate-spin: plate-spin 9s linear infinite;
-  --animate-rise: rise 0.5s ease-out backwards;
 
-  @keyframes rack-set {
+  @keyframes slab-drop {
     from {
       opacity: 0;
       transform: translateY(-1.5rem);
@@ -38,12 +37,6 @@
   @keyframes plate-spin {
     to {
       transform: rotate(360deg);
-    }
-  }
-  @keyframes rise {
-    from {
-      opacity: 0;
-      transform: translateY(0.75rem);
     }
   }
 }

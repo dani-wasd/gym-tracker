@@ -93,9 +93,9 @@ export const deleteAccount: FormAction = async (_previous, formData) => {
   if (error) return { ok: false, error: "Couldn't delete the account. Try again." };
   await deleteUser(profile.userId);
 
-  // The session belongs to a login that no longer exists; clearing it may fail, which is fine.
+  // The login no longer exists, so only the cookies on this device need clearing.
   const supabase = await createClient();
-  await supabase.auth.signOut().catch(() => {});
+  await supabase.auth.signOut({ scope: "local" });
 
   revalidatePath("/", "layout");
   redirect(ROUTES.home);

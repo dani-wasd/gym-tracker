@@ -38,7 +38,7 @@ const exercise = (
   ...secondary: MuscleGroup[]
 ): Exercise => ({ id, name, primary, secondary });
 
-export const EXERCISES: Exercise[] = [
+const EXERCISES: Exercise[] = [
   // Chest
   exercise("bench-press", "Bench press", "Chest", "Triceps", "Shoulders"),
   exercise("incline-bench-press", "Incline bench press", "Chest", "Shoulders", "Triceps"),

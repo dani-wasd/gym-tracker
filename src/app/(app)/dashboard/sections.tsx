@@ -1,9 +1,10 @@
 import { EmptyStack } from "@/src/components/stack/stack";
 import { WeekStack } from "@/src/components/stack/week-stack";
-import { LogbookEntries } from "@/src/components/session/logbook";
+import { Logbook } from "@/src/components/session/logbook";
 import { PageHeader } from "@/src/components/ui/page-header";
+import { Section } from "@/src/components/ui/section";
 import { LoadingRegion, SkeletonText } from "@/src/components/ui/skeleton";
-import { WeekPlanner, type PlannableWeek } from "@/src/components/week-planner";
+import { WeekPlanner, type PlannableWeek } from "@/src/components/planner/week-planner";
 import { requireProfile } from "@/src/lib/auth";
 import { getSchedule } from "@/src/lib/data/schedules";
 import { timezoneOf } from "@/src/lib/data/users";
@@ -13,7 +14,7 @@ import { formatWeekRange, shiftDate, timezoneOffsetLabel } from "@/src/lib/dates
 import { describeWeek, EMPTY_MASK } from "@/src/lib/week";
 
 /*
- * The data-backed parts of "My week". Each section fetches for itself and
+ * The data-backed parts of the Week tab. Each section fetches for itself and
  * streams in on its own; each has a placeholder of the same shape.
  */
 
@@ -94,15 +95,13 @@ export async function PlannerSection() {
 
 export function PlannerSkeleton() {
   return (
-    <section>
-      <p className="eyebrow">Planner</p>
-      <h2 className="headline mt-1 text-5xl">Next week</h2>
+    <Section eyebrow="Planner" title="Next week">
       <LoadingRegion label="planner">
-        <EmptyStack className="mt-6 mb-4" />
+        <EmptyStack className="mb-4" />
         <SkeletonText width="34ch" className="text-sm" />
         <SkeletonText width="9ch" className="mt-4 text-4xl" />
       </LoadingRegion>
-    </section>
+    </Section>
   );
 }
 
@@ -111,7 +110,7 @@ export function PlannerSkeleton() {
 export async function LogbookSection() {
   const profile = await requireProfile();
   const sessions = await getRecentSessions(profile.userId, LOGBOOK_LENGTH);
-  return <LogbookEntries sessions={sessions} />;
+  return <Logbook sessions={sessions} />;
 }
 
 export function LogbookSkeleton() {

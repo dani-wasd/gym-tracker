@@ -17,6 +17,8 @@ export const buttonStyles = cva(
         sm: "px-3 py-2 text-base",
         md: "px-5 py-3 text-xl",
         lg: "px-8 py-4 text-3xl",
+        /** No horizontal padding, for buttons that sit in a line of text or links. */
+        inline: "px-0 py-2 text-base",
       },
     },
     defaultVariants: {

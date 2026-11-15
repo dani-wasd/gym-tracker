@@ -14,13 +14,7 @@ export function WeekHistory({ weeks }: { weeks: WeekSummary[] }) {
               const meta = STATUS_META[day.status];
               const description = `${formatDate(day.date, "EEE d MMM")} · ${meta.label}`;
               return (
-                <span
-                  key={day.date}
-                  role="img"
-                  aria-label={description}
-                  title={description}
-                  className="relative z-10"
-                >
+                <span key={day.date} role="img" aria-label={description} title={description}>
                   <SlabShape look={meta.look} size="sm" label={day.name} />
                 </span>
               );

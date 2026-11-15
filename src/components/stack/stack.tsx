@@ -2,7 +2,7 @@ import * as React from "react";
 import { cn } from "@/src/lib/cn";
 
 /*
- * The building blocks of every week picture in the app — a machine's weight
+ * The building blocks of every week picture in the app: a machine's weight
  * stack, one slab per day from Sunday at the top to Saturday at the bottom:
  *
  *   <Stack>
@@ -77,7 +77,7 @@ export function Stack({ size = "lg", className, onMouseLeave, children }: StackP
   );
 }
 
-/** How a slab is finished — callers map their own meaning onto these. */
+/** How a slab is finished. Callers map their own meaning onto these. */
 export type SlabLook = "solid" | "accent" | "alert" | "hatch" | "hollow" | "ghost" | "empty";
 
 const LOOKS: Record<SlabLook, { slab: string; ink: string; hole: string }> = {
@@ -114,7 +114,7 @@ interface SlabShapeProps {
   label?: string;
   /** The selector pin goes into this slab. */
   pinned?: boolean;
-  /** Nudged out of the stack — the slab being read out. */
+  /** Nudged out of the stack: the slab being read out. */
   pulled?: boolean;
   /** Position in the stack (0–6); staggers the drop-in animation when set. */
   stackOrder?: number;
@@ -132,14 +132,14 @@ export function SlabShape({
   const { slab, ink, hole } = LOOKS[look];
 
   return (
-    <span className={cn("relative block w-full", ROW[size])}>
+    <span className={cn("relative z-10 block w-full", ROW[size])}>
       <span
         style={stackOrder === undefined ? undefined : { animationDelay: `${stackOrder * 60}ms` }}
         className={cn(
           "relative flex size-full items-center justify-center rounded-[2px] transition-[translate,background-color,border-color] duration-300 ease-out",
           slab,
           pulled && "translate-x-2",
-          stackOrder !== undefined && "animate-rack-set",
+          stackOrder !== undefined && "animate-slab-drop",
         )}
       >
         {label && (
@@ -162,7 +162,7 @@ export function SlabShape({
   );
 }
 
-/** The pin you push into a weight stack — here it marks today. */
+/** The pin you push into a weight stack. Here it marks today. */
 function SelectorPin({ size }: { size: StackSize }) {
   const large = size === "lg";
   return (
@@ -200,7 +200,7 @@ export function Slab({
   return (
     <button
       type="button"
-      className={cn("group relative z-10 block w-full disabled:cursor-default", className)}
+      className={cn("group block w-full disabled:cursor-default", className)}
       {...props}
     >
       <SlabShape
@@ -220,9 +220,7 @@ export function EmptyStack({ size = "lg", className }: { size?: StackSize; class
   return (
     <Stack size={size} className={className}>
       {Array.from({ length: 7 }, (_, index) => (
-        <span key={index} className="relative z-10">
-          <SlabShape look="empty" size={size} />
-        </span>
+        <SlabShape key={index} look="empty" size={size} />
       ))}
     </Stack>
   );

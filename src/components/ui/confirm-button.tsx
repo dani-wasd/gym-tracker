@@ -12,7 +12,7 @@ export function ConfirmButton({ children }: { children: React.ReactNode }) {
 
   if (!isArmed) {
     return (
-      <Button variant="ghost" size="sm" className="px-0" onClick={() => setIsArmed(true)}>
+      <Button variant="ghost" size="inline" onClick={() => setIsArmed(true)}>
         {children}
       </Button>
     );
@@ -23,7 +23,7 @@ export function ConfirmButton({ children }: { children: React.ReactNode }) {
       <Button type="submit" variant="danger" size="sm">
         Confirm
       </Button>
-      <Button variant="ghost" size="sm" className="px-0" onClick={() => setIsArmed(false)}>
+      <Button variant="ghost" size="inline" onClick={() => setIsArmed(false)}>
         Cancel
       </Button>
     </span>

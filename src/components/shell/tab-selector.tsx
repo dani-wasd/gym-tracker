@@ -11,7 +11,7 @@ const TABS = [
   { href: ROUTES.stats, label: "Stats" },
 ];
 
-export default function TabSelector() {
+export function TabSelector() {
   const pathname = usePathname();
 
   return (

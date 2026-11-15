@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Gym Tracker
 
-## Getting Started
+Plan which days you'll train next week, log what you actually did, and let friends see whether you showed up. Each week is drawn as a machine's weight stack, one slab per day.
 
-First, run the development server:
+## Running it
+
+Requires [Bun](https://bun.sh) and a Supabase project.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+bun install
+bun dev          # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create `.env.local` with:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Variable | What it's for |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Sign-in and session handling |
+| `SUPABASE_SERVICE_ROLE_KEY` | Deleting an account (server only) |
+| `DATABASE_URL` | Postgres via Supabase's transaction pooler (port 6543) |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Other scripts:
 
-## Learn More
+```bash
+bun run lint
+bun run build
+bunx drizzle-kit generate   # write a migration after changing a schema
+bunx drizzle-kit migrate    # apply pending migrations
+```
 
-To learn more about Next.js, take a look at the following resources:
+## How the code is laid out
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+src/
+  app/                  Routes (Next.js App Router)
+    (app)/              Signed-in tabs: dashboard (Week), friends, stats, settings
+      <tab>/frame.tsx     The tab's static text, with slots for data
+      <tab>/sections.tsx  Data-backed parts, each with a matching skeleton
+      <tab>/loading.tsx   Frame + skeletons, shown instantly on navigation
+      <tab>/actions.ts    Server actions for that tab
+    (auth)/             Login and signup
+  components/
+    stack/              The weight-stack picture of a week
+    session/            Workout timer, logging dialog, logbook
+    planner/ friends/ stats/ settings/ shell/
+    ui/                 Generic pieces: button, field, dialog, section, skeleton
+  lib/
+    data/               Database queries, one file per area
+    db/                 Drizzle schemas and migrations
+    week.ts stats.ts    Pure logic: day statuses, streaks, consistency
+    validation.ts       Everything coming from a form is checked here
+    dates.ts            Calendar dates as yyyy-MM-dd strings
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Two rules hold throughout:
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Days are judged on the lifter's own clock.** A workout's day comes from the timezone saved in their settings, and friends see that same day wherever they are.
+- **Server actions never trust ids from the browser.** They get the user from `requireProfile()` in `src/lib/auth.ts`.

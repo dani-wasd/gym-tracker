@@ -2,7 +2,7 @@ import Link from "next/link";
 import { StackLegend } from "@/src/components/stack/legend";
 import { WeekStack } from "@/src/components/stack/week-stack";
 import { buttonStyles } from "@/src/components/ui/button";
-import { Wordmark } from "@/src/components/wordmark";
+import { Wordmark } from "@/src/components/shell/wordmark";
 import { ROUTES } from "@/src/lib/routes";
 import { buildWeekSummary } from "@/src/lib/week";
 
@@ -38,7 +38,7 @@ export default function HomePage() {
     <div className="mx-auto flex min-h-dvh w-full max-w-5xl flex-col px-5 sm:px-8">
       <header className="flex items-baseline justify-between py-5">
         <Wordmark />
-        <Link href={ROUTES.login} className={buttonStyles({ variant: "ghost", size: "sm", className: "px-0" })}>
+        <Link href={ROUTES.login} className={buttonStyles({ variant: "ghost", size: "inline" })}>
           Sign in
         </Link>
       </header>

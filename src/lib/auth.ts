@@ -18,7 +18,7 @@ interface AuthIdentity {
  * `getClaims` checks the session token's signature locally, so unlike
  * `getUser` this doesn't cost a network round trip on every page.
  */
-export const getAuthIdentity = cache(async (): Promise<AuthIdentity | null> => {
+const getAuthIdentity = cache(async (): Promise<AuthIdentity | null> => {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getClaims();
   if (error || !data?.claims.sub) return null;
@@ -58,6 +58,6 @@ export const requireProfile = cache(async (): Promise<User> => {
   });
 
   const created = await getUserById(identity.id);
-  if (!created) redirect("/error");
+  if (!created) redirect(ROUTES.error);
   return created;
 });

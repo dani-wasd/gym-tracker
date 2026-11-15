@@ -18,7 +18,7 @@ import {
 export interface PlannableWeek {
   target: PlanTarget;
   title: string;
-  /** e.g. "Nov 22 — 28" */
+  /** e.g. "Nov 22–28" */
   range: string;
   /** Days to start from: the saved plan, or last week's carried forward. */
   plannedDays: number;
@@ -81,18 +81,17 @@ function PlanEditor({ week }: { week: PlannableWeek }) {
       <Stack className="mt-6 mb-4">
         {DAYS.map((day, index) => {
           const planned = isDayPlanned(plannedDays, index);
-          // While editing, free days show a dashed outline so it's clear they can be pressed.
-          const freeLook = isLocked ? "empty" : "ghost";
           return (
             <Slab
               key={day}
               label={day}
-              look={planned ? "solid" : freeLook}
-                disabled={isLocked || isSaving}
-                aria-label={`${day}: ${planned ? "planned, press to remove" : "free, press to plan"}`}
-                aria-pressed={planned}
-                onClick={() => setPlannedDays((mask) => toggleDay(mask, index))}
-                className={cn(!isLocked && planned && "hover:opacity-70")}
+              // While editing, free days are dashed outlines, so it's clear they can be pressed.
+              look={planned ? "solid" : isLocked ? "empty" : "ghost"}
+              disabled={isLocked || isSaving}
+              aria-label={`${day}: ${planned ? "planned, press to remove" : "free, press to plan"}`}
+              aria-pressed={planned}
+              onClick={() => setPlannedDays((mask) => toggleDay(mask, index))}
+              className={cn(!isLocked && planned && "hover:opacity-70")}
             />
           );
         })}

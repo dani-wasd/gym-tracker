@@ -1,4 +1,6 @@
 import { Button } from "@/src/components/ui/button";
+import { inputStyles } from "@/src/components/ui/field";
+import { cn } from "@/src/lib/cn";
 import { EXERCISE_LIMITS } from "@/src/lib/exercises";
 import { EMPTY_SET, type DraftSet } from "./exercise-draft";
 
@@ -9,15 +11,14 @@ interface SetRowsProps {
   onChange: (sets: DraftSet[]) => void;
 }
 
-const NUMBER_INPUT =
-  "w-16 border-b-2 border-iron bg-transparent py-1 text-center font-mono text-base text-chalk transition-colors placeholder:text-steel/50 focus:border-chalk focus:outline-none";
+const NUMBER_INPUT = cn(inputStyles, "w-16 py-1 text-center");
 
 /** The sets of one exercise: reps and weight per row. */
 export function SetRows({ exerciseName, sets, onChange }: SetRowsProps) {
   const update = (index: number, patch: Partial<DraftSet>) =>
     onChange(sets.map((set, at) => (at === index ? { ...set, ...patch } : set)));
 
-  // A new set starts as a copy of the last one — most sets repeat.
+  // A new set starts as a copy of the last one, since most sets repeat.
   const addSet = () => onChange([...sets, sets[sets.length - 1] ?? EMPTY_SET]);
 
   return (
@@ -55,7 +56,7 @@ export function SetRows({ exerciseName, sets, onChange }: SetRowsProps) {
       ))}
 
       {sets.length < EXERCISE_LIMITS.SETS_PER_EXERCISE && (
-        <Button variant="ghost" size="sm" onClick={addSet} className="self-start px-0">
+        <Button variant="ghost" size="inline" onClick={addSet} className="self-start">
           + {sets.length === 0 ? "Add sets" : "Set"}
         </Button>
       )}

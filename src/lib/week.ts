@@ -4,7 +4,7 @@ import { type DateString, weekDates } from "./dates";
 /* ---------- planned-days bitmask (bit 0 = Sunday … bit 6 = Saturday) ---------- */
 
 export const EMPTY_MASK = 0;
-export const FULL_WEEK_MASK = 127;
+const FULL_WEEK_MASK = 127;
 
 export function isDayPlanned(mask: number, dayIndex: number): boolean {
   return (mask & (1 << dayIndex)) !== 0;

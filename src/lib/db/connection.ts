@@ -1,6 +1,6 @@
-import { drizzle } from 'drizzle-orm/postgres-js';
-import postgres from 'postgres';
-import * as schema from './schemas/index';
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
+import * as schema from "./schemas";
 
 // Opening a connection costs over a second, so keep one client alive across
 // hot reloads in dev and across requests on a warm server instance.

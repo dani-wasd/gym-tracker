@@ -1,5 +1,6 @@
 import { AddFriendForm } from "@/src/components/friends/add-friend-form";
 import { PageHeader } from "@/src/components/ui/page-header";
+import { Section } from "@/src/components/ui/section";
 
 interface FriendsFrameProps {
   incoming: React.ReactNode;
@@ -7,7 +8,7 @@ interface FriendsFrameProps {
   outgoing: React.ReactNode;
 }
 
-/** The static parts of the friends tab, with slots for the lists that need data. */
+/** The static parts of the Friends tab, with slots for the lists that need data. */
 export function FriendsFrame({ incoming, friends, outgoing }: FriendsFrameProps) {
   return (
     <div className="flex flex-col gap-14">
@@ -16,11 +17,9 @@ export function FriendsFrame({ incoming, friends, outgoing }: FriendsFrameProps)
       {incoming}
       {friends}
 
-      <section>
-        <p className="eyebrow">Add a friend</p>
-        <h2 className="headline mt-1 mb-6 text-5xl">Call a spotter</h2>
+      <Section eyebrow="Add a friend" title="Call a spotter">
         <AddFriendForm />
-      </section>
+      </Section>
 
       {outgoing}
     </div>

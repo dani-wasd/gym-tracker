@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { inputStyles } from "@/src/components/ui/field";
 import { cn } from "@/src/lib/cn";
 import { MUSCLE_GROUPS, type MuscleGroup } from "@/src/lib/definitions";
 import { EXERCISE_LIMITS, findExercises } from "@/src/lib/exercises";
 
 interface ExercisePickerProps {
-  /** Ids already in the session — shown as added, tap again to take them off. */
+  /** Ids already in the session. Shown as added; tap again to take them off. */
   selectedIds: string[];
   onToggle: (exerciseId: string) => void;
 }
@@ -32,7 +33,12 @@ export function ExercisePicker({ selectedIds, onToggle }: ExercisePickerProps) {
       <legend className="eyebrow mb-2">Exercises</legend>
 
       <div className="flex flex-wrap gap-1.5">
-        <button type="button" aria-pressed={muscle === null} onClick={() => setMuscle(null)} className={chip(muscle === null)}>
+        <button
+          type="button"
+          aria-pressed={muscle === null}
+          onClick={() => setMuscle(null)}
+          className={chip(muscle === null)}
+        >
           All
         </button>
         {MUSCLE_GROUPS.map((group) => (
@@ -54,7 +60,7 @@ export function ExercisePicker({ selectedIds, onToggle }: ExercisePickerProps) {
         placeholder="Search exercises"
         value={search}
         onChange={(event) => setSearch(event.target.value)}
-        className="mt-3 w-full border-b-2 border-iron bg-transparent py-2 font-mono text-base text-chalk transition-colors placeholder:text-steel/60 focus:border-chalk focus:outline-none"
+        className={cn(inputStyles, "mt-3")}
       />
 
       <ul className="mt-2 max-h-44 overflow-y-auto border border-iron">

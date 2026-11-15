@@ -2,6 +2,7 @@ import { SettingsForm } from "@/src/components/settings/settings-form";
 import { TimezoneField, type TimezoneOption } from "@/src/components/settings/timezone-field";
 import { Field } from "@/src/components/ui/field";
 import { PageHeader } from "@/src/components/ui/page-header";
+import { Section } from "@/src/components/ui/section";
 import { requireProfile } from "@/src/lib/auth";
 import { timezoneOf } from "@/src/lib/data/users";
 import { timezoneOffsetLabel } from "@/src/lib/dates";
@@ -14,24 +15,6 @@ function timezoneOptions(saved: string): TimezoneOption[] {
   return [...zones]
     .sort()
     .map((zone) => ({ value: zone, label: `${zone} (${timezoneOffsetLabel(zone)})` }));
-}
-
-function Section({
-  eyebrow,
-  title,
-  children,
-}: {
-  eyebrow: string;
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section>
-      <p className="eyebrow">{eyebrow}</p>
-      <h2 className="headline mt-1 mb-6 text-5xl">{title}</h2>
-      {children}
-    </section>
-  );
 }
 
 export default async function SettingsPage() {
