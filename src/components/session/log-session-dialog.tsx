@@ -38,7 +38,7 @@ export function LogSessionDialog({ draft, ...handlers }: LogSessionDialogProps) 
     <Dialog
       open={draft !== null}
       onClose={handlers.onClose}
-      title={draft?.mode === "manual" ? "Log by hand" : "Rack it"}
+      title={draft?.mode === "manual" ? "Log a workout" : "Finish workout"}
       size="wide"
     >
       {draft && <LogSessionForm draft={draft} {...handlers} />}
@@ -92,7 +92,6 @@ function LogSessionForm({
       const result = await logWorkout({
         startTime: startTime.toISOString(),
         endTime: endTime.toISOString(),
-        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         muscles,
         exercises: logged.value,
       });
@@ -136,14 +135,14 @@ function LogSessionForm({
 
       <div className="flex flex-wrap items-center gap-3">
         <Button type="submit" disabled={isSaving || !hasContent}>
-          {isSaving ? "Logging…" : "Log it"}
+          {isSaving ? "Saving…" : "Save workout"}
         </Button>
         <Button variant="outline" onClick={onClose} disabled={isSaving}>
-          {isManual ? "Cancel" : "Keep lifting"}
+          {isManual ? "Cancel" : "Keep going"}
         </Button>
         {!isManual && (
           <Button variant="ghost" size="sm" onClick={onScrap} disabled={isSaving} className="ml-auto">
-            Scrap session
+            Discard
           </Button>
         )}
       </div>
@@ -161,7 +160,7 @@ function TimerSummary({ draft }: { draft: SessionDraft }) {
       <span className="font-display text-3xl leading-none font-extrabold">
         {format(start, "h:mm a")} → {format(end, "h:mm a")}
       </span>
-      <span className="block text-sm text-steel">{minutes} min on the clock</span>
+      <span className="block text-sm text-steel">{minutes} min</span>
     </p>
   );
 }

@@ -8,17 +8,21 @@ import {
   getEffectiveSchedule,
   upsertSchedule,
 } from "@/src/lib/data/schedules";
-import { timezoneOf, updateUserTimezone } from "@/src/lib/data/users";
+import { timezoneOf } from "@/src/lib/data/users";
 import { insertWorkout } from "@/src/lib/data/workouts";
 import type { ActionResult } from "@/src/lib/definitions";
 import { ROUTES } from "@/src/lib/routes";
 import { parseWorkout, type WorkoutInput } from "@/src/lib/validation";
 import { isValidMask, type PlanTarget } from "@/src/lib/week";
 
-export async function logWorkout(input: WorkoutInput): Promise<ActionResult> {
+export async function logWorkout(
+  input: Omit<WorkoutInput, "timezone">,
+): Promise<ActionResult> {
   const profile = await requireProfile();
 
-  const parsed = parseWorkout(input);
+  // The saved timezone, not the device's, decides which day this counts for,
+  // so the workout always lands in the same week the plan is judged in.
+  const parsed = parseWorkout({ ...input, timezone: timezoneOf(profile) });
   if (!parsed.ok) return parsed;
   const workout = parsed.value;
 
@@ -27,12 +31,6 @@ export async function logWorkout(input: WorkoutInput): Promise<ActionResult> {
     weekStartOf(workout.localDate),
   );
   await insertWorkout(profile.userId, schedule.id, workout);
-
-  // The profile timezone follows the lifter, so their "today" (and what their
-  // friends see as pending vs. missed) stays right when they travel.
-  if (workout.timezone !== timezoneOf(profile)) {
-    await updateUserTimezone(profile.userId, workout.timezone);
-  }
 
   revalidatePath(ROUTES.dashboard);
   return { ok: true };
@@ -58,7 +56,7 @@ export async function savePlan(
   if (target === "current") {
     const existing = await getEffectiveSchedule(profile.userId, currentWeek);
     if (existing) {
-      return { ok: false, error: "This week is already locked in." };
+      return { ok: false, error: "This week already has a plan." };
     }
     await upsertSchedule(profile.userId, currentWeek, plannedDays);
   } else {

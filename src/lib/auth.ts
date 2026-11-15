@@ -1,7 +1,7 @@
 import { cache } from "react";
 import { redirect } from "next/navigation";
 import { createClient } from "@/src/lib/supabase/server";
-import { createUser, getUserById } from "@/src/lib/data/users";
+import { createUser, getUserById, updateUserEmail } from "@/src/lib/data/users";
 import { DEFAULT_TIMEZONE } from "@/src/lib/definitions";
 import { isValidTimezone } from "@/src/lib/dates";
 import { ROUTES } from "@/src/lib/routes";
@@ -36,9 +36,16 @@ export const requireProfile = cache(async (): Promise<User> => {
   if (!identity) redirect(ROUTES.login);
 
   const profile = await getUserById(identity.id);
-  if (profile) return profile;
+  if (profile) {
+    // A confirmed email change lands on the login first; carry it over here.
+    if (identity.email && identity.email !== profile.email) {
+      await updateUserEmail(profile.userId, identity.email);
+      return { ...profile, email: identity.email };
+    }
+    return profile;
+  }
 
-  // Signed up but the profile row never landed — rebuild it from signup metadata.
+  // Signed up but the profile row never landed, so rebuild it from signup metadata.
   const { username, timezone } = identity.metadata;
   await createUser({
     userId: identity.id,

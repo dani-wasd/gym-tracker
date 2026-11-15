@@ -16,7 +16,20 @@ const fail = (error: string): Parsed<never> => ({ ok: false, error });
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const USERNAME_PATTERN = /^[A-Za-z0-9_.-]{2,24}$/;
-const MIN_PASSWORD_LENGTH = 8;
+export const MIN_PASSWORD_LENGTH = 8;
+
+export function parseUsername(raw: unknown): Parsed<string> {
+  const username = String(raw ?? "").trim();
+  return USERNAME_PATTERN.test(username)
+    ? { ok: true, value: username }
+    : fail("Username: 2–24 letters, numbers, dots, dashes or underscores.");
+}
+
+export function parseNewPassword(raw: unknown): Parsed<string> {
+  return typeof raw === "string" && raw.length >= MIN_PASSWORD_LENGTH
+    ? { ok: true, value: raw }
+    : fail(`Password needs at least ${MIN_PASSWORD_LENGTH} characters.`);
+}
 
 export function normalizeEmail(raw: unknown): string | null {
   if (typeof raw !== "string") return null;
@@ -49,19 +62,16 @@ export function parseSignup(formData: FormData): Parsed<SignupInput> {
   const credentials = parseCredentials(formData);
   if (!credentials.ok) return credentials;
 
-  const username = String(formData.get("username") ?? "").trim();
-  const timezone = formData.get("timezone");
+  const username = parseUsername(formData.get("username"));
+  if (!username.ok) return username;
+  const password = parseNewPassword(credentials.value.password);
+  if (!password.ok) return password;
 
-  if (!USERNAME_PATTERN.test(username)) {
-    return fail("Username: 2–24 letters, numbers, dots, dashes or underscores.");
-  }
-  if (credentials.value.password.length < MIN_PASSWORD_LENGTH) {
-    return fail(`Password needs at least ${MIN_PASSWORD_LENGTH} characters.`);
-  }
+  const timezone = formData.get("timezone");
   if (!isValidTimezone(timezone)) {
     return fail("Couldn't read your timezone. Reload and try again.");
   }
-  return { ok: true, value: { ...credentials.value, username, timezone } };
+  return { ok: true, value: { ...credentials.value, username: username.value, timezone } };
 }
 
 /* ---------- workouts ---------- */
@@ -69,6 +79,7 @@ export function parseSignup(formData: FormData): Parsed<SignupInput> {
 export interface WorkoutInput {
   startTime: string;
   endTime: string;
+  /** The lifter's saved timezone; decides which day the workout counts for. */
   timezone: string;
   /** Muscles ticked by hand, on top of whatever the exercises imply. */
   muscles: string[];
@@ -106,7 +117,7 @@ function parseExercises(raw: unknown): Parsed<LoggedExercise[]> {
   if (raw === undefined || raw === null) return { ok: true, value: [] };
   if (!Array.isArray(raw)) return fail("Couldn't read the exercises.");
   if (raw.length > EXERCISE_LIMITS.EXERCISES_PER_WORKOUT) {
-    return fail(`That's a lot — keep it to ${EXERCISE_LIMITS.EXERCISES_PER_WORKOUT} exercises.`);
+    return fail(`A workout can have at most ${EXERCISE_LIMITS.EXERCISES_PER_WORKOUT} exercises.`);
   }
 
   const exercises: LoggedExercise[] = [];
@@ -142,7 +153,7 @@ export function parseWorkout(
     return fail("Start and end time are required.");
   }
   if (!isValidTimezone(input.timezone)) {
-    return fail("Couldn't read your timezone. Reload and try again.");
+    return fail("Your saved timezone isn't valid. Pick one in settings.");
   }
   if (!Array.isArray(input.muscles) || !input.muscles.every(isMuscleGroup)) {
     return fail("Unknown muscle group.");
@@ -161,13 +172,13 @@ export function parseWorkout(
 
   if (startMs >= rawEndMs) return fail("A workout can't end before it starts.");
   if (rawEndMs - startMs < LIMITS.MIN_DURATION) {
-    return fail("Too short to count — a workout is at least 10 minutes.");
+    return fail("A workout has to be at least 10 minutes long.");
   }
   if (startMs < now - LIMITS.SUBMISSION_WINDOW) {
-    return fail("Too late — workouts must be logged within 24 hours.");
+    return fail("Workouts have to be logged within 24 hours of starting.");
   }
   if (rawEndMs > now + LIMITS.FUTURE_BUFFER) {
-    return fail("That workout hasn't happened yet.");
+    return fail("The end time is in the future.");
   }
 
   // Forgot to stop the clock? Cap it rather than reject it.
